@@ -1,3 +1,6 @@
+# Estructura del Proyecto: Supermercado
+
+```text
 Supermercado/
 │
 ├── pom.xml
@@ -52,3 +55,4 @@ Supermercado/
 │       │
 │       └── resources/                            # Archivos estáticos
 │           └── imagenes/                         # Íconos (add.png, delete.png, etc.)
+```
