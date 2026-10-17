@@ -1,4 +1,4 @@
-package com.example.modelo;
+package com.example.service;
 
 import com.example.excepciones.ClienteNoRegistradoException;
 import com.example.excepciones.ProductoNoDisponibleException;

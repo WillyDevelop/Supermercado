@@ -2,11 +2,10 @@ package com.example;
 
 import com.example.excepciones.ClienteNoRegistradoException;
 import com.example.excepciones.ProductoNoDisponibleException;
-import com.example.modelo.Supermercado;
+import com.example.service.Supermercado;
 import com.example.modelo.clientes.Cliente;
 import com.example.modelo.clientes.ClienteVIP;
 import com.example.modelo.empleados.Cajero;
-import com.example.modelo.empleados.Empleado;
 import com.example.modelo.empleados.Gerente;
 import com.example.modelo.productos.Producto;
 import com.example.modelo.productos.ProductoAlimenticio;
@@ -16,7 +15,6 @@ import com.example.modelo.productos.TipoDeUso;
 
 import java.time.LocalDate;
 import java.util.Scanner;
-import java.util.UUID;
 
 public class Main {
     public static void main(String[] args) {
