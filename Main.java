@@ -58,16 +58,16 @@ public class Main {
             }
             
             // --- PRUEBA DIRECTA DEL MÓDULO DE VENTAS ---
-            FrmVenta venta = new FrmVenta(null, true);
-            venta.setLocationRelativeTo(null); // Centra la ventana
-            venta.setVisible(true);            // Muestra la ventana de ventas
+            //FrmVenta venta = new FrmVenta(null, true);
+            //venta.setLocationRelativeTo(null); // Centra la ventana
+            //venta.setVisible(true);            // Muestra la ventana de ventas
 
             // NOTA: Para volver a abrir el Menú Principal en lugar de Ventas directamente,
             // comenta las líneas de FrmVenta y descomenta las siguientes:
-            // FrmPrincipal principal = new FrmPrincipal(null, false);
-            // principal.setLocationRelativeTo(null);
-            // principal.setVisible(true);
+             FrmPrincipal principal = new FrmPrincipal(null, false);
+             principal.setLocationRelativeTo(null);
+             principal.setVisible(true);
         });
     }
 }
-
+
