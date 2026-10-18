@@ -2,7 +2,7 @@ package com.example;
 
 import com.example.excepciones.ClienteNoRegistradoException;
 import com.example.excepciones.ProductoNoDisponibleException;
-import com.example.service.Supermercado;
+import com.example.service.SupermercadoService;
 import com.example.modelo.clientes.Cliente;
 import com.example.modelo.clientes.ClienteVIP;
 import com.example.modelo.empleados.Cajero;
@@ -13,6 +13,7 @@ import com.example.modelo.productos.ProductoElectronico;
 import com.example.modelo.productos.ProductoHigiene;
 import com.example.modelo.productos.TipoDeUso;
 import com.example.vista.FrmPrincipal;
+import com.example.vista.FrmVenta;
 
 import java.time.LocalDate;
 import java.util.Scanner;
@@ -22,7 +23,7 @@ import javax.swing.UIManager;
 public class Main {
     public static void main(String[] args) {
          // 1. Instanciamos el servicio principal y cargamos los datos de prueba
-        Supermercado supermercado = new Supermercado();
+        SupermercadoService supermercado = new SupermercadoService();
         // --- Carga de Productos ---
         supermercado.agregarProducto(new ProductoAlimenticio(
                 "Arroz Gallo Oro", 1500, "Alimenticio", LocalDate.now().plusDays(30), true));
@@ -55,9 +56,18 @@ public class Main {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            FrmPrincipal principal = new FrmPrincipal(null, false);
-            principal.setLocationRelativeTo(null); // Centra la ventana
-            principal.setVisible(true);            // Muestra la ventana
+            
+            // --- PRUEBA DIRECTA DEL MÓDULO DE VENTAS ---
+            FrmVenta venta = new FrmVenta(null, true);
+            venta.setLocationRelativeTo(null); // Centra la ventana
+            venta.setVisible(true);            // Muestra la ventana de ventas
+
+            // NOTA: Para volver a abrir el Menú Principal en lugar de Ventas directamente,
+            // comenta las líneas de FrmVenta y descomenta las siguientes:
+            // FrmPrincipal principal = new FrmPrincipal(null, false);
+            // principal.setLocationRelativeTo(null);
+            // principal.setVisible(true);
         });
     }
 }
+
