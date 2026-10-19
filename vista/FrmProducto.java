@@ -4,13 +4,39 @@
  */
 package com.example.vista;
 
+import com.example.controlador.CtrlProducto;
+import com.example.modelo.productos.Producto;
+import com.example.modelo.productos.ProductoAlimenticio;
+import com.example.modelo.productos.ProductoElectronico;
+import com.example.modelo.productos.ProductoHigiene;
+import com.example.modelo.productos.TipoDeUso;
+import java.awt.CardLayout;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.time.LocalDate;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.GroupLayout;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.LayoutStyle;
+import javax.swing.WindowConstants;
+import javax.swing.border.MatteBorder;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author sraco
  */
 public class FrmProducto extends javax.swing.JDialog {
 
-    private com.example.controlador.CtrlProducto ctrlProd = new com.example.controlador.CtrlProducto(); // constructor
+    private CtrlProducto ctrlProd = new CtrlProducto(); // constructor
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmProducto.class.getName());
 
@@ -20,6 +46,9 @@ public class FrmProducto extends javax.swing.JDialog {
     public FrmProducto(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        setLocationRelativeTo(null);
+        setTitle("Supermercado - Gestión de Productos");
+        llenarTabla();
     }
 
     /**
@@ -31,41 +60,335 @@ public class FrmProducto extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
+        btnVolver = new JButton();
+        lvlNombreProd = new JLabel();
+        txtNombreProd = new JTextField();
+        lblPrecio = new JLabel();
+        txtPrecio = new JTextField();
+        lvlCategoria = new JLabel();
+        cmbCategoria = new JComboBox<>();
+        btnGuardar = new JButton();
+        btnEditar = new JButton();
+        btnEliminar = new JButton();
+        lblInventario = new JLabel();
+        pnlContenedor = new JPanel();
+        pnlAlimento = new JPanel();
+        jLabel5 = new JLabel();
+        txtDiasCaducidad = new JTextField();
+        chkPerecedero = new JCheckBox();
+        pnlElectronico = new JPanel();
+        lblGarantia = new JLabel();
+        txtGarantia = new JTextField();
+        pnlHigiene = new JPanel();
+        lblHigiene = new JLabel();
+        cmbTipoUso = new JComboBox<>();
+        jScrollPane1 = new JScrollPane();
+        tblProds = new JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
-        jButton1.setText("Volver");
-        jButton1.addActionListener(this::jButton1ActionPerformed);
+        btnVolver.setText("Volver");
+        btnVolver.addActionListener(this::btnVolverActionPerformed);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton1)
-                .addContainerGap(322, Short.MAX_VALUE))
+        lvlNombreProd.setText("Nombre del Producto");
+
+        lblPrecio.setText("Precio");
+
+        lvlCategoria.setText("Categoria");
+
+        cmbCategoria.setModel(new DefaultComboBoxModel<>(new String[] { "ALIMENTICIO", "ELECTRONICO", "HIGIENE" }));
+        cmbCategoria.addActionListener(this::cmbCategoriaActionPerformed);
+
+        btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(this::btnGuardarActionPerformed);
+
+        btnEditar.setText("Editar");
+        btnEditar.addActionListener(this::btnEditarActionPerformed);
+
+        btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(this::btnEliminarActionPerformed);
+
+        lblInventario.setText("Inventario de Productos");
+
+        pnlContenedor.setLayout(new CardLayout());
+
+        jLabel5.setText("Días para caducar");
+
+        chkPerecedero.setText("¿Es perecedero?");
+
+        GroupLayout pnlAlimentoLayout = new GroupLayout(pnlAlimento);
+        pnlAlimento.setLayout(pnlAlimentoLayout);
+        pnlAlimentoLayout.setHorizontalGroup(pnlAlimentoLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(pnlAlimentoLayout.createSequentialGroup()
+                .addGap(5, 5, 5)
+                .addGroup(pnlAlimentoLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlAlimentoLayout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtDiasCaducidad))
+                    .addComponent(chkPerecedero))
+                .addGap(5, 5, 5))
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(271, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addContainerGap())
+        pnlAlimentoLayout.setVerticalGroup(pnlAlimentoLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(pnlAlimentoLayout.createSequentialGroup()
+                .addGap(5, 5, 5)
+                .addGroup(pnlAlimentoLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(txtDiasCaducidad, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(chkPerecedero)
+                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        pnlContenedor.add(pnlAlimento, "Alimenticio");
+
+        lblGarantia.setText("Años de Garantía");
+
+        GroupLayout pnlElectronicoLayout = new GroupLayout(pnlElectronico);
+        pnlElectronico.setLayout(pnlElectronicoLayout);
+        pnlElectronicoLayout.setHorizontalGroup(pnlElectronicoLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(pnlElectronicoLayout.createSequentialGroup()
+                .addGap(5, 5, 5)
+                .addComponent(lblGarantia)
+                .addGap(18, 18, 18)
+                .addComponent(txtGarantia)
+                .addGap(5, 5, 5))
+        );
+        pnlElectronicoLayout.setVerticalGroup(pnlElectronicoLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(pnlElectronicoLayout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addGroup(pnlElectronicoLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblGarantia)
+                    .addComponent(txtGarantia, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(20, Short.MAX_VALUE))
+        );
+
+        pnlContenedor.add(pnlElectronico, "Electronico");
+
+        lblHigiene.setText("Tipo de Uso");
+
+        cmbTipoUso.setModel(new DefaultComboBoxModel<>(new String[] { "PERSONAL", "DOMESTICO" }));
+
+        GroupLayout pnlHigieneLayout = new GroupLayout(pnlHigiene);
+        pnlHigiene.setLayout(pnlHigieneLayout);
+        pnlHigieneLayout.setHorizontalGroup(pnlHigieneLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(pnlHigieneLayout.createSequentialGroup()
+                .addGap(5, 5, 5)
+                .addComponent(lblHigiene, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(cmbTipoUso, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(5, 5, 5))
+        );
+        pnlHigieneLayout.setVerticalGroup(pnlHigieneLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(pnlHigieneLayout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addGroup(pnlHigieneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblHigiene)
+                    .addComponent(cmbTipoUso, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(20, Short.MAX_VALUE))
+        );
+
+        pnlContenedor.add(pnlHigiene, "Higiene");
+
+        tblProds.setBorder(new MatteBorder(null));
+        tblProds.setFont(new Font("Liberation Sans", 2, 15)); // NOI18N
+        tblProds.setModel(new DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Nombre", "Categoria", "Precio ($)", "Detalle"
+            }
+        ) {
+            Class[] types = new Class [] {
+                String.class, String.class, Double.class, String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        tblProds.setRowHeight(30);
+        jScrollPane1.setViewportView(tblProds);
+
+        GroupLayout layout = new GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                    .addComponent(pnlContenedor, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lvlNombreProd)
+                    .addComponent(txtNombreProd)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lvlCategoria, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(cmbCategoria, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblPrecio, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtPrecio))
+                    .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                            .addComponent(btnGuardar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnEliminar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(6, 6, 6)
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                            .addComponent(btnEditar, GroupLayout.PREFERRED_SIZE, 199, GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnVolver, GroupLayout.PREFERRED_SIZE, 199, GroupLayout.PREFERRED_SIZE))))
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addComponent(lblInventario)
+                    .addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 561, Short.MAX_VALUE))
+                .addGap(30, 30, 30))
+        );
+        layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(lvlNombreProd)
+                    .addComponent(lblInventario))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(txtNombreProd, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                            .addComponent(lvlCategoria)
+                            .addComponent(cmbCategoria, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblPrecio)
+                            .addComponent(txtPrecio, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(pnlContenedor, GroupLayout.PREFERRED_SIZE, 66, GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnGuardar)
+                            .addComponent(btnEditar))
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnEliminar)
+                            .addComponent(btnVolver))))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     // Boton Volver
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnVolverActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         ctrlProd.volverAlMenu(this);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnVolverActionPerformed
+
+    private void btnGuardarActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        try {
+            String nombre = txtNombreProd.getText().trim();
+            double precio = Double.parseDouble(txtPrecio.getText().trim());
+            String categoria = cmbCategoria.getSelectedItem().toString();
+            if (nombre.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "El nombre no puede estar vacío.");
+                return;
+            }
+            Producto nuevo = null;
+            if (categoria.equalsIgnoreCase("ALIMENTICIO")) {
+                int dias = Integer.parseInt(txtDiasCaducidad.getText().trim());
+                boolean perecedero = chkPerecedero.isSelected();
+                LocalDate caducidad = LocalDate.now().plusDays(dias);
+                nuevo = new ProductoAlimenticio(nombre, (int) precio, "Alimenticio", caducidad, perecedero);
+            } else if (categoria.equalsIgnoreCase("ELECTRONICO")) {
+                int garantia = Integer.parseInt(txtGarantia.getText().trim());
+                nuevo = new ProductoElectronico(nombre, (int) precio, "Electrónico", garantia);
+            } else if (categoria.equalsIgnoreCase("HIGIENE")) {
+                String usoTexto = cmbTipoUso.getSelectedItem().toString();
+                TipoDeUso uso = TipoDeUso.valueOf(usoTexto);
+                nuevo = new ProductoHigiene(nombre, (int) precio, "Higiene", uso);
+            }
+            if (nuevo != null) {
+                ctrlProd.agregarProducto(nuevo);
+                llenarTabla();
+                limpiarCampos();
+                JOptionPane.showMessageDialog(this, "¡Producto agregado con éxito!");
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Por favor ingrese números válidos en precio, días o garantía.");
+        }
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void btnEditarActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnEliminarActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        int fila = tblProds.getSelectedRow();
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione un producto de la tabla para eliminar.");
+            return;
+        }
+        int confirmacion = JOptionPane.showConfirmDialog(
+                this, "¿Está seguro de eliminar este producto?", "Confirmar", JOptionPane.YES_NO_OPTION);
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            Producto p = ctrlProd.listarProductos().get(fila);
+            ctrlProd.eliminarProducto(p.getCodigo());
+            llenarTabla();
+            JOptionPane.showMessageDialog(this, "Producto eliminado.");
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void cmbCategoriaActionPerformed(ActionEvent evt) {//GEN-FIRST:event_cmbCategoriaActionPerformed
+        // TODO add your handling code here:
+      CardLayout card = (CardLayout) pnlContenedor.getLayout();
+    String seleccion = cmbCategoria.getSelectedItem().toString();
+    if (seleccion.equalsIgnoreCase("ALIMENTICIO")) {
+        card.show(pnlContenedor, "Alimenticio");
+    } else if (seleccion.equalsIgnoreCase("ELECTRONICO")) {
+        card.show(pnlContenedor, "Electronico");
+    } else if (seleccion.equalsIgnoreCase("HIGIENE")) {
+        card.show(pnlContenedor, "Higiene");
+    }
+    }//GEN-LAST:event_cmbCategoriaActionPerformed
 
     /**
      * @param args the command line arguments
      */
+    public void llenarTabla() {
+        DefaultTableModel modelo = (DefaultTableModel) tblProds.getModel();
+        modelo.setRowCount(0); // Limpia filas viejas
+
+        for (Producto p : ctrlProd.listarProductos()) {
+            String detalle = "";
+
+            if (p instanceof ProductoAlimenticio) {
+                ProductoAlimenticio a = (ProductoAlimenticio) p;
+                detalle = "Vence: " + a.getFechaCaducicad();
+            } else if (p instanceof ProductoElectronico) {
+                ProductoElectronico e = (ProductoElectronico) p;
+                detalle = "Garantía: " + e.getGarantia() + " años";
+            } else if (p instanceof ProductoHigiene) {
+                ProductoHigiene h = (ProductoHigiene) p;
+                detalle = "Uso: " + h.getTipoDeUso();
+            }
+
+            modelo.addRow(new Object[]{
+                p.getNombre(),
+                p.getCategoria(),
+                p.getPrecio(),
+                detalle
+            });
+        }
+    }
+
+    private void limpiarCampos() {
+        txtNombreProd.setText("");
+        txtPrecio.setText("");
+        txtDiasCaducidad.setText("");
+        txtGarantia.setText("");
+        chkPerecedero.setSelected(false);
+    }
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -101,6 +424,29 @@ public class FrmProducto extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private JButton btnEditar;
+    private JButton btnEliminar;
+    private JButton btnGuardar;
+    private JButton btnVolver;
+    private JCheckBox chkPerecedero;
+    private JComboBox<String> cmbCategoria;
+    private JComboBox<String> cmbTipoUso;
+    private JLabel jLabel5;
+    private JScrollPane jScrollPane1;
+    private JLabel lblGarantia;
+    private JLabel lblHigiene;
+    private JLabel lblInventario;
+    private JLabel lblPrecio;
+    private JLabel lvlCategoria;
+    private JLabel lvlNombreProd;
+    private JPanel pnlAlimento;
+    private JPanel pnlContenedor;
+    private JPanel pnlElectronico;
+    private JPanel pnlHigiene;
+    private JTable tblProds;
+    private JTextField txtDiasCaducidad;
+    private JTextField txtGarantia;
+    private JTextField txtNombreProd;
+    private JTextField txtPrecio;
     // End of variables declaration//GEN-END:variables
 }
