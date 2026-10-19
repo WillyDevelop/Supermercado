@@ -31,7 +31,7 @@ public class CtrlPrincipal {
     }
 
     // 4. Método que crea la instancia de FrmEmpleado y la muestra
-    public void abrirEmpleados() {
+   public void abrirEmpleados() {
         FrmEmpleado vistaEmp = new FrmEmpleado(null, true);
         vistaEmp.setLocationRelativeTo(null);
         vistaEmp.setVisible(true);
