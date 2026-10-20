@@ -13,6 +13,8 @@ import com.example.modelo.productos.TipoDeUso;
 import java.awt.CardLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.time.LocalDate;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
@@ -48,6 +50,8 @@ public class FrmProducto extends javax.swing.JDialog {
         initComponents();
         setLocationRelativeTo(null);
         setTitle("Supermercado - Gestión de Productos");
+        jLabel5.setVisible(false);
+        txtDiasCaducidad.setVisible(false);
         llenarTabla();
     }
 
@@ -68,7 +72,7 @@ public class FrmProducto extends javax.swing.JDialog {
         lvlCategoria = new JLabel();
         cmbCategoria = new JComboBox<>();
         btnGuardar = new JButton();
-        btnEditar = new JButton();
+        btnConfirmarCambios = new JButton();
         btnEliminar = new JButton();
         lblInventario = new JLabel();
         pnlContenedor = new JPanel();
@@ -86,6 +90,11 @@ public class FrmProducto extends javax.swing.JDialog {
         tblProds = new JTable();
 
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                formMouseClicked(evt);
+            }
+        });
 
         btnVolver.setText("Volver");
         btnVolver.addActionListener(this::btnVolverActionPerformed);
@@ -102,8 +111,8 @@ public class FrmProducto extends javax.swing.JDialog {
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(this::btnGuardarActionPerformed);
 
-        btnEditar.setText("Editar");
-        btnEditar.addActionListener(this::btnEditarActionPerformed);
+        btnConfirmarCambios.setText("Confirmar Cambios");
+        btnConfirmarCambios.addActionListener(this::btnConfirmarCambiosActionPerformed);
 
         btnEliminar.setText("Eliminar");
         btnEliminar.addActionListener(this::btnEliminarActionPerformed);
@@ -115,6 +124,7 @@ public class FrmProducto extends javax.swing.JDialog {
         jLabel5.setText("Días para caducar");
 
         chkPerecedero.setText("¿Es perecedero?");
+        chkPerecedero.addActionListener(this::chkPerecederoActionPerformed);
 
         GroupLayout pnlAlimentoLayout = new GroupLayout(pnlAlimento);
         pnlAlimento.setLayout(pnlAlimentoLayout);
@@ -122,21 +132,21 @@ public class FrmProducto extends javax.swing.JDialog {
             .addGroup(pnlAlimentoLayout.createSequentialGroup()
                 .addGap(5, 5, 5)
                 .addGroup(pnlAlimentoLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addComponent(chkPerecedero)
                     .addGroup(pnlAlimentoLayout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addGap(18, 18, 18)
-                        .addComponent(txtDiasCaducidad))
-                    .addComponent(chkPerecedero))
+                        .addComponent(txtDiasCaducidad)))
                 .addGap(5, 5, 5))
         );
         pnlAlimentoLayout.setVerticalGroup(pnlAlimentoLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(pnlAlimentoLayout.createSequentialGroup()
                 .addGap(5, 5, 5)
+                .addComponent(chkPerecedero)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlAlimentoLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(txtDiasCaducidad, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(chkPerecedero)
                 .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -203,12 +213,24 @@ public class FrmProducto extends javax.swing.JDialog {
             Class[] types = new Class [] {
                 String.class, String.class, Double.class, String.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
         tblProds.setRowHeight(30);
+        tblProds.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                tblProdsMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblProds);
 
         GroupLayout layout = new GroupLayout(getContentPane());
@@ -232,15 +254,15 @@ public class FrmProducto extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                             .addComponent(btnGuardar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnEliminar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(6, 6, 6)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                            .addComponent(btnEditar, GroupLayout.PREFERRED_SIZE, 199, GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnConfirmarCambios, GroupLayout.PREFERRED_SIZE, 199, GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnVolver, GroupLayout.PREFERRED_SIZE, 199, GroupLayout.PREFERRED_SIZE))))
-                .addGap(30, 30, 30)
+                .addGap(47, 47, 47)
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addComponent(lblInventario)
-                    .addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 561, Short.MAX_VALUE))
-                .addGap(30, 30, 30))
+                    .addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 466, Short.MAX_VALUE))
+                .addGap(29, 29, 29))
         );
         layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -248,10 +270,7 @@ public class FrmProducto extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(lvlNombreProd)
                     .addComponent(lblInventario))
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(3, 3, 3)
                         .addComponent(txtNombreProd, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
@@ -268,12 +287,15 @@ public class FrmProducto extends javax.swing.JDialog {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                             .addComponent(btnGuardar)
-                            .addComponent(btnEditar))
+                            .addComponent(btnVolver))
                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                             .addComponent(btnEliminar)
-                            .addComponent(btnVolver))))
-                .addContainerGap(25, Short.MAX_VALUE))
+                            .addComponent(btnConfirmarCambios)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         pack();
@@ -295,8 +317,8 @@ public class FrmProducto extends javax.swing.JDialog {
             }
             Producto nuevo = null;
             if (categoria.equalsIgnoreCase("ALIMENTICIO")) {
-                int dias = Integer.parseInt(txtDiasCaducidad.getText().trim());
                 boolean perecedero = chkPerecedero.isSelected();
+                int dias = perecedero ? Integer.parseInt(txtDiasCaducidad.getText().trim()) : 0;
                 LocalDate caducidad = LocalDate.now().plusDays(dias);
                 nuevo = new ProductoAlimenticio(nombre, (int) precio, "Alimenticio", caducidad, perecedero);
             } else if (categoria.equalsIgnoreCase("ELECTRONICO")) {
@@ -318,9 +340,62 @@ public class FrmProducto extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
-    private void btnEditarActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnEditarActionPerformed
+    private void btnConfirmarCambiosActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnConfirmarCambiosActionPerformed
+        int fila = tblProds.getSelectedRow(); // getSelectedRow al seleccionar una fila trae su contenido y lo almacena como un objeto llamdao fila
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione un producto de la tabla para editar");
+            return;
+        }
+
+        try {
+            String nuevoNombre = txtNombreProd.getText().trim();
+            if (nuevoNombre.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "El nombre no puede estar vacio");
+                return;
+            }
+            double nuevoPrecio = Double.parseDouble(txtPrecio.getText().trim());
+            if (nuevoPrecio < 0) {
+                JOptionPane.showMessageDialog(this, "El precio no puede ser menos a cero 0");
+                return;
+            }
+
+            Producto editar = ctrlProd.listarProductos().get(fila);
+            String categoriaSeleccionada = cmbCategoria.getSelectedItem().toString();
+            String categoriaOriginal = editar.getCategoria().replace("ó", "o").replace("Ó", "O");
+
+            if (!categoriaOriginal.equalsIgnoreCase(categoriaSeleccionada)) {
+                JOptionPane.showMessageDialog(this, "Por favor no modifique la categoria del producto");
+                return;
+            }
+
+            editar.setNombre(nuevoNombre);
+            editar.setPrecio(nuevoPrecio);
+
+            if (editar instanceof ProductoAlimenticio) {
+                ProductoAlimenticio a = (ProductoAlimenticio) editar;
+                boolean perecedero = chkPerecedero.isSelected();
+                int dias = perecedero ? Integer.parseInt(txtDiasCaducidad.getText().trim()) : 0;
+                a.setFechaCaducicad(LocalDate.now().plusDays(dias));
+                a.setEsPerecedero(perecedero);
+            } else if (editar instanceof ProductoElectronico) {
+                ProductoElectronico e = (ProductoElectronico) editar;
+                int garantia = Integer.parseInt(txtGarantia.getText().trim());
+                e.setGarantia(garantia);
+            } else if (editar instanceof ProductoHigiene) {
+                ProductoHigiene h = (ProductoHigiene) editar;
+                TipoDeUso uso = TipoDeUso.valueOf(cmbTipoUso.getSelectedItem().toString());
+                h.setTipoDeUso(uso);
+            }
+
+            ctrlProd.actualizarProducto(editar);
+            llenarTabla();
+            limpiarCampos();
+            JOptionPane.showMessageDialog(this, "¡Producto editado con éxito!");
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Por favor ingrese números válidos en precio, días o garantía.");
+        }
+    }//GEN-LAST:event_btnConfirmarCambiosActionPerformed
 
     private void btnEliminarActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         int fila = tblProds.getSelectedRow();
@@ -340,16 +415,65 @@ public class FrmProducto extends javax.swing.JDialog {
 
     private void cmbCategoriaActionPerformed(ActionEvent evt) {//GEN-FIRST:event_cmbCategoriaActionPerformed
         // TODO add your handling code here:
-      CardLayout card = (CardLayout) pnlContenedor.getLayout();
-    String seleccion = cmbCategoria.getSelectedItem().toString();
-    if (seleccion.equalsIgnoreCase("ALIMENTICIO")) {
-        card.show(pnlContenedor, "Alimenticio");
-    } else if (seleccion.equalsIgnoreCase("ELECTRONICO")) {
-        card.show(pnlContenedor, "Electronico");
-    } else if (seleccion.equalsIgnoreCase("HIGIENE")) {
-        card.show(pnlContenedor, "Higiene");
-    }
+        CardLayout card = (CardLayout) pnlContenedor.getLayout();
+        String seleccion = cmbCategoria.getSelectedItem().toString();
+        if (seleccion.equalsIgnoreCase("ALIMENTICIO")) {
+            card.show(pnlContenedor, "Alimenticio");
+        } else if (seleccion.equalsIgnoreCase("ELECTRONICO")) {
+            card.show(pnlContenedor, "Electronico");
+        } else if (seleccion.equalsIgnoreCase("HIGIENE")) {
+            card.show(pnlContenedor, "Higiene");
+        }
     }//GEN-LAST:event_cmbCategoriaActionPerformed
+
+    private void formMouseClicked(MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formMouseClicked
+
+    private void chkPerecederoActionPerformed(ActionEvent evt) {//GEN-FIRST:event_chkPerecederoActionPerformed
+        boolean esPerecedero = chkPerecedero.isSelected();
+        jLabel5.setVisible(esPerecedero);
+        txtDiasCaducidad.setVisible(esPerecedero);
+        if (!esPerecedero) {
+            txtDiasCaducidad.setText("");
+        }
+        pnlAlimento.revalidate();
+        pnlAlimento.repaint();
+    }//GEN-LAST:event_chkPerecederoActionPerformed
+
+    private void tblProdsMouseClicked(MouseEvent evt) {//GEN-FIRST:event_tblProdsMouseClicked
+        int fila = tblProds.getSelectedRow();
+        if (fila != -1) {
+            Producto editar = ctrlProd.listarProductos().get(fila);
+
+            txtNombreProd.setText(editar.getNombre());
+            txtPrecio.setText(String.valueOf(editar.getPrecio()));
+
+            // seteo de los campos, nombreProducto, precioProducto, categoriaProducto y detalleProducto    
+            
+            if (editar instanceof ProductoAlimenticio) {
+                ProductoAlimenticio a = (ProductoAlimenticio) editar;
+                cmbCategoria.setSelectedItem("ALIMENTICIO");
+                chkPerecedero.setSelected(a.isEsPerecedero());
+                jLabel5.setVisible(a.isEsPerecedero());
+                txtDiasCaducidad.setVisible(a.isEsPerecedero());
+                if (a.isEsPerecedero()) {
+                    long dias = java.time.temporal.ChronoUnit.DAYS.between(LocalDate.now(), a.getFechaCaducicad());
+                    txtDiasCaducidad.setText(String.valueOf(dias));
+                } else {
+                    txtDiasCaducidad.setText("");
+                }
+            } else if (editar instanceof ProductoElectronico) {
+                ProductoElectronico e = (ProductoElectronico) editar;
+                cmbCategoria.setSelectedItem("ELECTRONICO");
+                txtGarantia.setText(String.valueOf(e.getGarantia()));
+            } else if (editar instanceof ProductoHigiene) {
+                ProductoHigiene h = (ProductoHigiene) editar;
+                cmbCategoria.setSelectedItem("HIGIENE");
+                cmbTipoUso.setSelectedItem(h.getTipoDeUso().toString());
+            }
+        }
+    }//GEN-LAST:event_tblProdsMouseClicked
 
     /**
      * @param args the command line arguments
@@ -363,7 +487,7 @@ public class FrmProducto extends javax.swing.JDialog {
 
             if (p instanceof ProductoAlimenticio) {
                 ProductoAlimenticio a = (ProductoAlimenticio) p;
-                detalle = "Vence: " + a.getFechaCaducicad();
+                detalle = a.isEsPerecedero() ? "Vence: " + a.getFechaCaducicad() : "No perecedero";
             } else if (p instanceof ProductoElectronico) {
                 ProductoElectronico e = (ProductoElectronico) p;
                 detalle = "Garantía: " + e.getGarantia() + " años";
@@ -387,6 +511,8 @@ public class FrmProducto extends javax.swing.JDialog {
         txtDiasCaducidad.setText("");
         txtGarantia.setText("");
         chkPerecedero.setSelected(false);
+        jLabel5.setVisible(false);
+        txtDiasCaducidad.setVisible(false);
     }
 
     public static void main(String args[]) {
@@ -424,7 +550,7 @@ public class FrmProducto extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private JButton btnEditar;
+    private JButton btnConfirmarCambios;
     private JButton btnEliminar;
     private JButton btnGuardar;
     private JButton btnVolver;
