@@ -16,11 +16,4 @@ public class Cajero extends Empleado {
 
         return salarioBase + comision;
     }
-        public int getVentasRealizadas() {
-        return ventasRealizadas;
-    }
-
-    public void setVentasRealizadas(int ventasRealizadas) {
-        this.ventasRealizadas = ventasRealizadas;
-    }
 }

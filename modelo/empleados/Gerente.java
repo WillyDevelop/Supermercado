@@ -14,11 +14,4 @@ public class Gerente extends Empleado {
     public double calcularSalario() {
         return salarioBase + bonoGerencial;
     }
-        public double getBonoGerencial() {
-        return bonoGerencial;
-    }
-
-    public void setBonoGerencial(double bonoGerencial) {
-        this.bonoGerencial = bonoGerencial;
-    }
 }
