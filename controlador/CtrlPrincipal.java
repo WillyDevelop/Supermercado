@@ -19,8 +19,10 @@ public class CtrlPrincipal {
     // 2. Método que crea la instancia de FrmCliente y la muestra
     public void abrirClientes() {
         FrmCliente vistaCli = new FrmCliente(null, true);
-        vistaCli.setLocationRelativeTo(null);
-        vistaCli.setVisible(true);
+    CtrlCliente ctrlCliente = new CtrlCliente(vistaCli); // controlador
+
+    vistaCli.setLocationRelativeTo(null); 
+    vistaCli.setVisible(true);            // moestrar la ventana
     }
 
     // 3. Método que crea la instancia de FrmVenta y la muestra

@@ -18,6 +18,9 @@ public class FrmCliente extends javax.swing.JDialog {
     public FrmCliente(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        
+        // Ocultar el campo de descuento por defecto al iniciar (Cliente Regular)
+        limpiarCampos();
     }
 
     /**
@@ -29,21 +32,187 @@ public class FrmCliente extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        LabelDNI = new javax.swing.JLabel();
+        TextDNI = new javax.swing.JTextField();
+        LabelNombre = new javax.swing.JLabel();
+        TextNombre = new javax.swing.JTextField();
+        ComboBoxClienteTipo = new javax.swing.JComboBox<>();
+        TextDescuento = new javax.swing.JLabel();
+        LabelDescuento = new javax.swing.JTextField();
+        BotonRegistrar = new javax.swing.JButton();
+        BotonEditar = new javax.swing.JButton();
+        BotonEliminar = new javax.swing.JButton();
+        BotonVolver = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        LabelDNI.setText("DNI");
+
+        TextDNI.addActionListener(this::TextDNIActionPerformed);
+
+        LabelNombre.setText("Nombre");
+
+        TextNombre.addActionListener(this::TextNombreActionPerformed);
+
+        ComboBoxClienteTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cliente Regular", "Cliente VIP" }));
+        ComboBoxClienteTipo.addActionListener(this::ComboBoxClienteTipoActionPerformed);
+
+        TextDescuento.setText("Descuento VIP (%)");
+
+        LabelDescuento.addActionListener(this::LabelDescuentoActionPerformed);
+
+        BotonRegistrar.setText("Registrar");
+        BotonRegistrar.addActionListener(this::BotonRegistrarActionPerformed);
+
+        BotonEditar.setText("Editar");
+        BotonEditar.addActionListener(this::BotonEditarActionPerformed);
+
+        BotonEliminar.setText("Eliminar");
+        BotonEliminar.addActionListener(this::BotonEliminarActionPerformed);
+
+        BotonVolver.setText("Volver");
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "DNI", "Nombre", "Descuento VIP"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(LabelDNI)
+                                    .addComponent(ComboBoxClienteTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(TextDNI, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(TextNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(LabelNombre)))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(LabelDescuento, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(TextDescuento, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(BotonRegistrar)
+                        .addGap(12, 12, 12)
+                        .addComponent(BotonEditar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(BotonEliminar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(BotonVolver)))
+                .addGap(32, 32, 32))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(LabelDNI)
+                            .addComponent(LabelNombre))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(TextDNI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(TextNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(ComboBoxClienteTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(TextDescuento)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(LabelDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 12, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(BotonVolver)
+                    .addComponent(BotonEliminar)
+                    .addComponent(BotonEditar)
+                    .addComponent(BotonRegistrar))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void ComboBoxClienteTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboBoxClienteTipoActionPerformed
+        String seleccion = ComboBoxClienteTipo.getSelectedItem().toString();
+
+        if (seleccion.equals("Cliente VIP")) {
+            // Mostrar la etiqueta (TextDescuento) y el cuadro de texto (LabelDescuento)
+            TextDescuento.setVisible(true);
+            LabelDescuento.setVisible(true);
+        } else {
+            // ocultar si es Cliente Regular
+            TextDescuento.setVisible(false);
+            LabelDescuento.setVisible(false);
+            LabelDescuento.setText("");
+        }
+
+        // Forzar a la ventana a recalcular el diseño y respawnear
+        this.revalidate();
+        this.repaint();
+    }//GEN-LAST:event_ComboBoxClienteTipoActionPerformed
+
+    private void TextNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextNombreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TextNombreActionPerformed
+
+    private void LabelDescuentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LabelDescuentoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_LabelDescuentoActionPerformed
+
+    private void BotonRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonRegistrarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BotonRegistrarActionPerformed
+
+    private void BotonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonEditarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BotonEditarActionPerformed
+
+    private void BotonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonEliminarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BotonEliminarActionPerformed
+
+    private void TextDNIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextDNIActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TextDNIActionPerformed
 
     /**
      * @param args the command line arguments
@@ -81,7 +250,70 @@ public class FrmCliente extends javax.swing.JDialog {
             }
         });
     }
+    
+    // METODOS Y GETERS PARA EL CONTROLADOR
+    
+    public javax.swing.JButton getBtnRegistrar() {
+        return BotonRegistrar;
+    }
+    public javax.swing.JButton getBtnEditar() {
+        return BotonEditar;
+    }
+    public javax.swing.JButton getBtnEliminar() {
+        return BotonEliminar;
+    }
+    public javax.swing.JButton getBtnVolver() {
+        return BotonVolver;
+    }
+    public javax.swing.JComboBox<String> getCbTipoCliente() {
+        return ComboBoxClienteTipo;
+    }
+    public javax.swing.JTextField getTxtDni() {
+        return TextDNI;
+    }
+    public javax.swing.JTextField getTxtNombre() {
+        return TextNombre;
+    }
+    public javax.swing.JTextField getTxtDescuentoVip() {
+        return LabelDescuento;
+    }
+    public javax.swing.JTable getTablaClientes() {
+        return jTable1;
+    }
+    public void mostrarMensaje(String msj) {
+        javax.swing.JOptionPane.showMessageDialog(this, msj);
+    }
+    public void mostrarError(String error) {
+        javax.swing.JOptionPane.showMessageDialog(this, error, "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+    }
+    public void limpiarCampos() {
+        TextDNI.setText("");
+        TextNombre.setText("");
+        LabelDescuento.setText("");
+        
+        ComboBoxClienteTipo.setSelectedIndex(0);
+        
+        // Ocultar la etiqueta y la caja de texto de descuento para Cliente Regular
+        TextDescuento.setVisible(false);
+        LabelDescuento.setVisible(false);
+    
+    TextDNI.setEditable(true);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BotonEditar;
+    private javax.swing.JButton BotonEliminar;
+    private javax.swing.JButton BotonRegistrar;
+    private javax.swing.JButton BotonVolver;
+    private javax.swing.JComboBox<String> ComboBoxClienteTipo;
+    private javax.swing.JLabel LabelDNI;
+    private javax.swing.JTextField LabelDescuento;
+    private javax.swing.JLabel LabelNombre;
+    private javax.swing.JTextField TextDNI;
+    private javax.swing.JLabel TextDescuento;
+    private javax.swing.JTextField TextNombre;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }

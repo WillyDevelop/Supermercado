@@ -28,4 +28,7 @@ public class ClienteVIP extends Cliente {
         aplicarDescuentoVIP(producto);
         super.comprar(producto);
     }
+    public int getDescuentoVIP() {
+        return descuentoVIP;
+    }
 }
