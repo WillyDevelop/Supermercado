@@ -18,20 +18,11 @@ public abstract class Empleado {
         return nombre;
     }
 
-    //no se porq no habia setters asi q los agregue
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
     public int getIdEmpleado() {
         return idEmpleado;
     }
 
     public double getSalarioBase() {
         return salarioBase;
-    }
-
-    public void setSalarioBase(double salarioBase) {
-        this.salarioBase = salarioBase;
     }
 }
