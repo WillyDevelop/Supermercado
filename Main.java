@@ -26,17 +26,17 @@ public class Main {
         SupermercadoService supermercado = new SupermercadoService();
         // --- Carga de Productos ---
         supermercado.agregarProducto(new ProductoAlimenticio(
-                "Arroz Gallo Oro", 1500, "Alimenticio", LocalDate.now().plusDays(30), true));
+                "Arroz Gallo Oro", 1500, "Alimenticio", LocalDate.now().plusDays(30), true, 20));
         supermercado.agregarProducto(new ProductoAlimenticio(
-                "Lentejas", 1000, "Alimenticio", LocalDate.now().plusDays(45), true));
+                "Lentejas", 1000, "Alimenticio", LocalDate.now().plusDays(45), true , 20));
         supermercado.agregarProducto(new ProductoElectronico(
-                "Auriculares Bluetooth", 25000, "Electrónico", 1));
+                "Auriculares Bluetooth", 25000, "Electrónico", 1, 15));
         supermercado.agregarProducto(new ProductoElectronico(
-                "Monitor 24 pulgadas", 185000, "Electrónico", 2));
+                "Monitor 24 pulgadas", 185000, "Electrónico", 2, 25));
         supermercado.agregarProducto(new ProductoHigiene(
-                "Shampoo Anticaspa", 3500, "Higiene", TipoDeUso.PERSONAL));
+                "Shampoo Anticaspa", 3500, "Higiene", TipoDeUso.PERSONAL,10));
         supermercado.agregarProducto(new ProductoHigiene(
-                "Detergente Líquido", 2800, "Higiene", TipoDeUso.DOMESTICO));
+                "Detergente Líquido", 2800, "Higiene", TipoDeUso.DOMESTICO, 11));
         // --- Carga de Clientes ---
         supermercado.agregarCliente(new Cliente(
                 "Juan Pérez", 35111222, Cliente.getTotalclientes()));

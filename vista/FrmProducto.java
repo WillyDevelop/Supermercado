@@ -69,6 +69,8 @@ public class FrmProducto extends javax.swing.JDialog {
         txtNombreProd = new JTextField();
         lblPrecio = new JLabel();
         txtPrecio = new JTextField();
+        lblStock = new JLabel();
+        txtStock = new JTextField();
         lvlCategoria = new JLabel();
         cmbCategoria = new JComboBox<>();
         btnGuardar = new JButton();
@@ -102,6 +104,8 @@ public class FrmProducto extends javax.swing.JDialog {
         lvlNombreProd.setText("Nombre del Producto");
 
         lblPrecio.setText("Precio");
+
+        lblStock.setText("Stock");
 
         lvlCategoria.setText("Categoria");
 
@@ -207,14 +211,14 @@ public class FrmProducto extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Nombre", "Categoria", "Precio ($)", "Detalle"
+                "Nombre", "Categoria", "Precio ($)", "Stock", "Detalle"
             }
         ) {
             Class[] types = new Class [] {
-                String.class, String.class, Double.class, String.class
+                String.class, String.class, Double.class, Integer.class, String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -250,6 +254,10 @@ public class FrmProducto extends javax.swing.JDialog {
                         .addComponent(lblPrecio, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(txtPrecio))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblStock, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtStock))
                     .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                             .addComponent(btnGuardar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -283,6 +291,10 @@ public class FrmProducto extends javax.swing.JDialog {
                             .addComponent(lblPrecio)
                             .addComponent(txtPrecio, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblStock)
+                            .addComponent(txtStock, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
                         .addComponent(pnlContenedor, GroupLayout.PREFERRED_SIZE, 66, GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
@@ -310,9 +322,18 @@ public class FrmProducto extends javax.swing.JDialog {
         try {
             String nombre = txtNombreProd.getText().trim();
             double precio = Double.parseDouble(txtPrecio.getText().trim());
+            int stock = Integer.parseInt(txtStock.getText().trim());
             String categoria = cmbCategoria.getSelectedItem().toString();
             if (nombre.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "El nombre no puede estar vacío.");
+                return;
+            }
+            if (precio < 0) {
+                JOptionPane.showMessageDialog(this, "El precio no puede ser menor a 0.");
+                return;
+            }
+            if (stock < 0) {
+                JOptionPane.showMessageDialog(this, "El stock no puede ser menor a 0.");
                 return;
             }
             Producto nuevo = null;
@@ -320,14 +341,14 @@ public class FrmProducto extends javax.swing.JDialog {
                 boolean perecedero = chkPerecedero.isSelected();
                 int dias = perecedero ? Integer.parseInt(txtDiasCaducidad.getText().trim()) : 0;
                 LocalDate caducidad = LocalDate.now().plusDays(dias);
-                nuevo = new ProductoAlimenticio(nombre, (int) precio, "Alimenticio", caducidad, perecedero);
+                nuevo = new ProductoAlimenticio(nombre, (int) precio, "Alimenticio", caducidad, perecedero, stock);
             } else if (categoria.equalsIgnoreCase("ELECTRONICO")) {
                 int garantia = Integer.parseInt(txtGarantia.getText().trim());
-                nuevo = new ProductoElectronico(nombre, (int) precio, "Electrónico", garantia);
+                nuevo = new ProductoElectronico(nombre, (int) precio, "Electrónico", garantia, stock);
             } else if (categoria.equalsIgnoreCase("HIGIENE")) {
                 String usoTexto = cmbTipoUso.getSelectedItem().toString();
                 TipoDeUso uso = TipoDeUso.valueOf(usoTexto);
-                nuevo = new ProductoHigiene(nombre, (int) precio, "Higiene", uso);
+                nuevo = new ProductoHigiene(nombre, (int) precio, "Higiene", uso, stock);
             }
             if (nuevo != null) {
                 ctrlProd.agregarProducto(nuevo);
@@ -336,7 +357,7 @@ public class FrmProducto extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(this, "¡Producto agregado con éxito!");
             }
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Por favor ingrese números válidos en precio, días o garantía.");
+            JOptionPane.showMessageDialog(this, "Por favor ingrese números válidos en precio, stock, días o garantía.");
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
@@ -358,6 +379,11 @@ public class FrmProducto extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(this, "El precio no puede ser menos a cero 0");
                 return;
             }
+            int nuevoStock = Integer.parseInt(txtStock.getText().trim());
+            if (nuevoStock < 0) {
+                JOptionPane.showMessageDialog(this, "El stock no puede ser menor a 0");
+                return;
+            }
 
             Producto editar = ctrlProd.listarProductos().get(fila);
             String categoriaSeleccionada = cmbCategoria.getSelectedItem().toString();
@@ -370,6 +396,7 @@ public class FrmProducto extends javax.swing.JDialog {
 
             editar.setNombre(nuevoNombre);
             editar.setPrecio(nuevoPrecio);
+            editar.setStock(nuevoStock);
 
             if (editar instanceof ProductoAlimenticio) {
                 ProductoAlimenticio a = (ProductoAlimenticio) editar;
@@ -393,7 +420,7 @@ public class FrmProducto extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "¡Producto editado con éxito!");
 
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Por favor ingrese números válidos en precio, días o garantía.");
+            JOptionPane.showMessageDialog(this, "Por favor ingrese números válidos en precio, stock, días o garantía.");
         }
     }//GEN-LAST:event_btnConfirmarCambiosActionPerformed
 
@@ -448,6 +475,7 @@ public class FrmProducto extends javax.swing.JDialog {
 
             txtNombreProd.setText(editar.getNombre());
             txtPrecio.setText(String.valueOf(editar.getPrecio()));
+            txtStock.setText(String.valueOf(editar.getStock()));
 
             // seteo de los campos, nombreProducto, precioProducto, categoriaProducto y detalleProducto    
             
@@ -500,6 +528,7 @@ public class FrmProducto extends javax.swing.JDialog {
                 p.getNombre(),
                 p.getCategoria(),
                 p.getPrecio(),
+                p.getStock(),
                 detalle
             });
         }
@@ -508,6 +537,7 @@ public class FrmProducto extends javax.swing.JDialog {
     private void limpiarCampos() {
         txtNombreProd.setText("");
         txtPrecio.setText("");
+        txtStock.setText("");
         txtDiasCaducidad.setText("");
         txtGarantia.setText("");
         chkPerecedero.setSelected(false);
@@ -563,6 +593,7 @@ public class FrmProducto extends javax.swing.JDialog {
     private JLabel lblHigiene;
     private JLabel lblInventario;
     private JLabel lblPrecio;
+    private JLabel lblStock;
     private JLabel lvlCategoria;
     private JLabel lvlNombreProd;
     private JPanel pnlAlimento;
@@ -574,5 +605,6 @@ public class FrmProducto extends javax.swing.JDialog {
     private JTextField txtGarantia;
     private JTextField txtNombreProd;
     private JTextField txtPrecio;
+    private JTextField txtStock;
     // End of variables declaration//GEN-END:variables
 }

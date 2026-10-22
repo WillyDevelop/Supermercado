@@ -8,8 +8,8 @@ public class ProductoHigiene extends Producto implements Promocionable, Impuesto
 
     private TipoDeUso tipoDeUso;
 
-    public ProductoHigiene(String nombre, Integer precio, String categoria, TipoDeUso tipoDeUso) {
-        super(nombre, precio, categoria);
+    public ProductoHigiene(String nombre, Integer precio, String categoria, TipoDeUso tipoDeUso, int stock) {
+        super(nombre, precio, categoria, stock);
         this.tipoDeUso = tipoDeUso;
     }
 

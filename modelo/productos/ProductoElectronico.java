@@ -13,8 +13,8 @@ public class ProductoElectronico extends Producto implements Promocionable, Impu
 //        super(nombre, codigo, precio, categoria);
 //    }
 
-    public ProductoElectronico(String nombre, Integer precio, String categoria, int garantia) {
-        super(nombre, precio, categoria);
+    public ProductoElectronico(String nombre, Integer precio, String categoria, int garantia, int stock) {
+        super(nombre, precio, categoria, stock);
         this.garantia = garantia;
     }
     //get y set

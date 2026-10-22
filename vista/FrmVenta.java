@@ -68,7 +68,7 @@ public class FrmVenta extends javax.swing.JDialog {
             cbProductos.addItem("-- Sin productos en inventario --");
         } else {
             for (Producto p : listaProductosDisponibles) {
-                cbProductos.addItem(p.getNombre() + " - $" + p.getPrecio() + " (" + p.getCategoria() + ")");
+                cbProductos.addItem(p.getNombre() + " - $" + p.getPrecio() + " [Stock: " + p.getStock() + "] (" + p.getCategoria() + ")");
             }
         }
     }
@@ -326,7 +326,25 @@ public class FrmVenta extends javax.swing.JDialog {
             return;
         }
 
+        int yaEnCarrito = 0;
+        for (Producto prodCarrito : ctrlVenta.obtenerCarrito()) {
+            if (prodCarrito.getCodigo().equals(p.getCodigo())) {
+                yaEnCarrito++;
+            }
+        }
+
         int cantidad = (Integer) spCantidad.getValue();
+        if (yaEnCarrito + cantidad > p.getStock()) {
+            JOptionPane.showMessageDialog(this,
+                    "Stock insuficiente para '" + p.getNombre() + "'.\n"
+                    + "Stock disponible: " + p.getStock() + "\n"
+                    + "Ya en carrito: " + yaEnCarrito + "\n"
+                    + "Cantidad solicitada: " + cantidad,
+                    "Stock Insuficiente",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
         for (int i = 0; i < cantidad; i++) {
             ctrlVenta.agregarAlCarrito(p);
             modeloTabla.addRow(new Object[] {

@@ -5,8 +5,13 @@ import com.example.excepciones.ProductoNoDisponibleException;
 import com.example.modelo.clientes.Cliente;
 import com.example.modelo.clientes.ClienteVIP;
 import com.example.modelo.productos.Producto;
+import com.example.modelo.productos.ProductoAlimenticio;
+import com.example.modelo.productos.ProductoElectronico;
+import com.example.modelo.productos.ProductoHigiene;
+import com.example.modelo.productos.TipoDeUso;
 import com.example.service.SupermercadoService;
 import com.example.vista.FrmVenta;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +23,27 @@ public class CtrlVenta {
     public CtrlVenta() {
         this.servicio = SupermercadoService.getInstancia();
         this.carrito = new ArrayList<>();
+
+        if (this.servicio.getProductosDisponibles().isEmpty()) {
+            this.servicio.agregarProducto(new ProductoAlimenticio(
+                    "Arroz Gallo Oro", 1500, "Alimenticio", LocalDate.now().plusDays(30), true, 20));
+            this.servicio.agregarProducto(new ProductoAlimenticio(
+                    "Lentejas", 1000, "Alimenticio", LocalDate.now().plusDays(45), true, 20));
+            this.servicio.agregarProducto(new ProductoElectronico(
+                    "Auriculares Bluetooth", 25000, "Electrónico", 1, 15));
+            this.servicio.agregarProducto(new ProductoElectronico(
+                    "Monitor 24 pulgadas", 185000, "Electrónico", 2, 25));
+            this.servicio.agregarProducto(new ProductoHigiene(
+                    "Shampoo Anticaspa", 3500, "Higiene", TipoDeUso.PERSONAL, 10));
+            this.servicio.agregarProducto(new ProductoHigiene(
+                    "Detergente Líquido", 2800, "Higiene", TipoDeUso.DOMESTICO, 11));
+        }
+        if (this.servicio.getClientes().isEmpty()) {
+            this.servicio.agregarCliente(new Cliente(
+                    "Juan Pérez", 35111222, Cliente.getTotalclientes()));
+            this.servicio.agregarCliente(new ClienteVIP(
+                    "Ana Gómez", 38333444, Cliente.getTotalclientes(), 15));
+        }
     }
 
     // --- Consultas al Servicio para alimentar la Vista ---

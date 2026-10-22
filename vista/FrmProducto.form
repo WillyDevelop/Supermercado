@@ -42,6 +42,11 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="txtPrecio" max="32767" attributes="0"/>
                   </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="lblStock" min="-2" pref="70" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="txtStock" max="32767" attributes="0"/>
+                  </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="btnGuardar" max="32767" attributes="0"/>
@@ -84,6 +89,11 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="lblPrecio" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="txtPrecio" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="lblStock" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtStock" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="pnlContenedor" min="-2" pref="66" max="-2" attributes="0"/>
@@ -130,6 +140,13 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtPrecio">
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblStock">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Stock"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtStock">
     </Component>
     <Component class="javax.swing.JLabel" name="lvlCategoria">
       <Properties>
@@ -358,10 +375,11 @@
               <Font name="Liberation Sans" size="15" style="2"/>
             </Property>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="4" rowCount="0">
+              <Table columnCount="5" rowCount="0">
                 <Column editable="false" title="Nombre" type="java.lang.String"/>
                 <Column editable="false" title="Categoria" type="java.lang.String"/>
                 <Column editable="false" title="Precio ($)" type="java.lang.Double"/>
+                <Column editable="false" title="Stock" type="java.lang.Integer"/>
                 <Column editable="false" title="Detalle" type="java.lang.String"/>
               </Table>
             </Property>

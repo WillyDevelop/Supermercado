@@ -10,8 +10,8 @@ public class ProductoAlimenticio extends Producto implements Promocionable {
     private LocalDate fechaCaducidad;
     private boolean esPerecedero;
 
-    public ProductoAlimenticio(String nombre, Integer precio, String categoria, LocalDate fechaCaducicad, boolean esPerecedero) {
-        super(nombre, precio, categoria);
+    public ProductoAlimenticio(String nombre, Integer precio, String categoria, LocalDate fechaCaducicad, boolean esPerecedero, int stock) {
+        super(nombre, precio, categoria, stock);
         this.fechaCaducidad = fechaCaducicad;
         this.esPerecedero = esPerecedero;
     }

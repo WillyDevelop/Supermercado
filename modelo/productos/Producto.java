@@ -10,13 +10,15 @@ public abstract class Producto {
     private UUID codigo; // Revisar funcionamiento del ID
     private double precio;
     private String categoria;
+    private int stock;
 
     // Constructores
-    public Producto(String nombre, Integer precio, String categoria) {
+    public Producto(String nombre, Integer precio, String categoria, int stock) {
         this.codigo = UUID.randomUUID();
         this.nombre = nombre;
         this.precio = precio;
         this.categoria = categoria;
+        this.stock = stock;
         totalProductos++;
 
     }
@@ -60,6 +62,14 @@ public abstract class Producto {
 
     public void setCategoria(String categoria) {
         this.categoria = categoria;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
     }
 
     public abstract double calcularPrecioFinal();

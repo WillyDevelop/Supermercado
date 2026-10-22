@@ -240,16 +240,16 @@ public class SupermercadoService {
                             + " no esta registrado en el sistema.");
         }
 
-        // Validar producto disponible
-        if (!productosDisponibles.contains(producto)) {
+        // Validar producto disponible y con stock
+        if (!productosDisponibles.contains(producto) || producto.getStock() <= 0) {
             throw new ProductoNoDisponibleException(
                     "Error: El producto " + (producto != null ? producto.getNombre() : "desconocido")
-                            + " no esta disponible en el inventario.");
+                            + " no tiene stock disponible en el inventario.");
         }
 
         // Realiza la compra y actualiza el inventario
         cliente.comprar(producto);
-        productosDisponibles.remove(producto);
+        producto.setStock(producto.getStock() - 1);
     }
 
     // Sobrecarga para registrar la compra de una lista de productos (carrito)
@@ -259,17 +259,30 @@ public class SupermercadoService {
             return;
         }
 
-        // Primero verificamos que todos los productos estén disponibles antes de
-        // descontar
+        // Contar unidades solicitadas de cada producto en el carrito
+        java.util.Map<Producto, Integer> cantidades = new java.util.HashMap<>();
         for (Producto p : productos) {
             if (!productosDisponibles.contains(p)) {
                 throw new ProductoNoDisponibleException(
                         "Error: El producto " + (p != null ? p.getNombre() : "desconocido")
                                 + " no esta disponible en el inventario.");
             }
+            cantidades.put(p, cantidades.getOrDefault(p, 0) + 1);
         }
 
-        // Si todos están disponibles, procesamos cada compra
+        // Verificar que haya suficiente stock para cada producto
+        for (java.util.Map.Entry<Producto, Integer> entry : cantidades.entrySet()) {
+            Producto p = entry.getKey();
+            int cantidadPedida = entry.getValue();
+            if (p.getStock() < cantidadPedida) {
+                throw new ProductoNoDisponibleException(
+                        "Error: Stock insuficiente para '" + p.getNombre()
+                                + "'. Stock actual: " + p.getStock()
+                                + ", solicitado: " + cantidadPedida + ".");
+            }
+        }
+
+        // Si todos están disponibles y con stock suficiente, procesamos cada compra
         for (Producto p : productos) {
             registrarCompra(cliente, p);
         }
