@@ -12,6 +12,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class FrmVenta extends javax.swing.JFrame {
 
+    // controlador y listas
     private CtrlVenta ctrlVenta = new CtrlVenta();
     private List<Cliente> listaClientes;
     private List<Producto> listaProductosDisponibles;
@@ -51,6 +52,7 @@ public class FrmVenta extends javax.swing.JFrame {
         actualizarTotales();
     }
 
+    // vista pide los datos al controlador y este los obtiene del servicio
     private void cargarClientes() {
         cbClientes.removeAllItems();
         listaClientes = ctrlVenta.obtenerClientes();
@@ -73,7 +75,8 @@ public class FrmVenta extends javax.swing.JFrame {
             cbProductos.addItem("-- Sin productos en inventario --");
         } else {
             for (Producto p : listaProductosDisponibles) {
-                cbProductos.addItem(p.getNombre() + " - $" + p.getPrecio() + " [Stock: " + p.getStock() + "] (" + p.getCategoria() + ")");
+                cbProductos.addItem(p.getNombre() + " - $" + p.getPrecio() + " [Stock: " + p.getStock() + "] ("
+                        + p.getCategoria() + ")");
             }
         }
     }
@@ -119,7 +122,8 @@ public class FrmVenta extends javax.swing.JFrame {
     }
 
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated
+    // Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         panelCabecera = new javax.swing.JPanel();
@@ -164,60 +168,72 @@ public class FrmVenta extends javax.swing.JFrame {
         javax.swing.GroupLayout panelCabeceraLayout = new javax.swing.GroupLayout(panelCabecera);
         panelCabecera.setLayout(panelCabeceraLayout);
         panelCabeceraLayout.setHorizontalGroup(
-            panelCabeceraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelCabeceraLayout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addGroup(panelCabeceraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblCliente)
-                    .addComponent(lblProducto))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(panelCabeceraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(panelCabeceraLayout.createSequentialGroup()
-                        .addComponent(cbClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(lblTipoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panelCabeceraLayout.createSequentialGroup()
-                        .addComponent(cbProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(lblCantidad)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(spCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(14, Short.MAX_VALUE))
-        );
+                panelCabeceraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(panelCabeceraLayout.createSequentialGroup()
+                                .addGap(14, 14, 14)
+                                .addGroup(panelCabeceraLayout
+                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(lblCliente)
+                                        .addComponent(lblProducto))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(panelCabeceraLayout
+                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addGroup(panelCabeceraLayout.createSequentialGroup()
+                                                .addComponent(cbClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 280,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(lblTipoCliente, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                        260, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(panelCabeceraLayout.createSequentialGroup()
+                                                .addComponent(cbProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 280,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(lblCantidad)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(spCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 55,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(btnAgregar, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                        javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addContainerGap(14, Short.MAX_VALUE)));
         panelCabeceraLayout.setVerticalGroup(
-            panelCabeceraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelCabeceraLayout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addGroup(panelCabeceraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblCliente)
-                    .addComponent(cbClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblTipoCliente))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(panelCabeceraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblProducto)
-                    .addComponent(cbProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblCantidad)
-                    .addComponent(spCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAgregar))
-                .addContainerGap(14, Short.MAX_VALUE))
-        );
+                panelCabeceraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(panelCabeceraLayout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addGroup(panelCabeceraLayout
+                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(lblCliente)
+                                        .addComponent(cbClientes, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(lblTipoCliente))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(panelCabeceraLayout
+                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(lblProducto)
+                                        .addComponent(cbProductos, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(lblCantidad)
+                                        .addComponent(spCantidad, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(btnAgregar))
+                                .addContainerGap(14, Short.MAX_VALUE)));
 
         tablaCarrito.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+                new Object[][] {
 
-            },
-            new String [] {
-                "#", "Producto", "Categoría", "Precio Unit.", "Precio Final"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                },
+                new String[] {
+                        "#", "Producto", "Categoría", "Precio Unit.", "Precio Final"
+                }) {
+            boolean[] canEdit = new boolean[] {
+                    false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                return canEdit[columnIndex];
             }
         });
         jScrollPane1.setViewportView(tablaCarrito);
@@ -241,51 +257,61 @@ public class FrmVenta extends javax.swing.JFrame {
         javax.swing.GroupLayout panelPieLayout = new javax.swing.GroupLayout(panelPie);
         panelPie.setLayout(panelPieLayout);
         panelPieLayout.setHorizontalGroup(
-            panelPieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelPieLayout.createSequentialGroup()
-                .addComponent(btnEliminarItem, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(lblSubtotal, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
-                .addComponent(btnFinalizarVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
+                panelPieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(panelPieLayout.createSequentialGroup()
+                                .addComponent(btnEliminarItem, javax.swing.GroupLayout.PREFERRED_SIZE, 160,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblSubtotal, javax.swing.GroupLayout.PREFERRED_SIZE, 130,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 160,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16,
+                                        Short.MAX_VALUE)
+                                .addComponent(btnFinalizarVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 125,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 75,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)));
         panelPieLayout.setVerticalGroup(
-            panelPieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelPieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(btnEliminarItem, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(lblSubtotal)
-                .addComponent(lblTotal)
-                .addComponent(btnFinalizarVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
+                panelPieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(panelPieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnEliminarItem, javax.swing.GroupLayout.PREFERRED_SIZE, 34,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblSubtotal)
+                                .addComponent(lblTotal)
+                                .addComponent(btnFinalizarVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 34,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 34,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(panelCabecera, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1)
-                    .addComponent(panelPie, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(16, 16, 16))
-        );
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(16, 16, 16)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(panelCabecera, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jScrollPane1)
+                                        .addComponent(panelPie, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(16, 16, 16)));
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(panelCabecera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(panelPie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
-        );
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(14, 14, 14)
+                                .addComponent(panelCabecera, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 210,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(panelPie, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(14, Short.MAX_VALUE)));
 
         pack();
         setLocationRelativeTo(null);
@@ -309,6 +335,7 @@ public class FrmVenta extends javax.swing.JFrame {
             return;
         }
 
+        // validación de stock
         int yaEnCarrito = 0;
         for (Producto prodCarrito : ctrlVenta.obtenerCarrito()) {
             if (prodCarrito.getCodigo().equals(p.getCodigo())) {
@@ -320,15 +347,16 @@ public class FrmVenta extends javax.swing.JFrame {
         if (yaEnCarrito + cantidad > p.getStock()) {
             JOptionPane.showMessageDialog(this,
                     "Stock insuficiente para '" + p.getNombre() + "'.\n"
-                    + "Stock disponible: " + p.getStock() + "\n"
-                    + "Ya en carrito: " + yaEnCarrito + "\n"
-                    + "Cantidad solicitada: " + cantidad,
+                            + "Stock disponible: " + p.getStock() + "\n"
+                            + "Ya en carrito: " + yaEnCarrito + "\n"
+                            + "Cantidad solicitada: " + cantidad,
                     "Stock Insuficiente",
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        for (int i = 0; i < cantidad; i++) {
+        // agrego productos al carrito
+        for (int i = 0; i < cantidad; i++) { // si quiero compro 3 unidades, esto se repite 3 veces
             ctrlVenta.agregarAlCarrito(p);
             modeloTabla.addRow(new Object[] {
                     modeloTabla.getRowCount() + 1,
@@ -361,7 +389,10 @@ public class FrmVenta extends javax.swing.JFrame {
     private void btnFinalizarVentaActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnFinalizarVentaActionPerformed
         Cliente cliente = getClienteSeleccionado();
         try {
+            // 1. delega la logica al controlador
             ctrlVenta.finalizarVenta(cliente);
+
+            // 2. muestra mensaje de exito
             JOptionPane.showMessageDialog(this,
                     "¡Venta realizada con éxito!\nSe actualizaron las compras del cliente y el stock del inventario.",
                     "Venta Exitosa",
@@ -423,12 +454,12 @@ public class FrmVenta extends javax.swing.JFrame {
         getContentPane().setLayout(new java.awt.BorderLayout());
         getContentPane().setBackground(UITheme.COLOR_BG_CANVAS);
 
-        // 1. Header / Barra Superior Ejecutiva (#0F172A, 75px) con botón Volver integrado
+        // 1. Header / Barra Superior Ejecutiva (#0F172A, 75px) con botón Volver
+        // integrado
         javax.swing.JPanel pnlTop = UITheme.createHeader(
                 "SUPERMERCADO · Caja y Punto de Venta",
                 "Registro de operaciones, carrito y facturación",
-                btnVolver
-        );
+                btnVolver);
         getContentPane().add(pnlTop, java.awt.BorderLayout.NORTH);
 
         // 2. Cuerpo Principal (#F1F5F9 con padding de 32px a 40px)
@@ -452,32 +483,45 @@ public class FrmVenta extends javax.swing.JFrame {
         gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
 
         // Fila 0: Cliente
-        gbc.gridx = 0; gbc.gridy = 0; gbc.weightx = 0;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 0;
         pnlGrid.add(lblCliente, gbc);
 
-        gbc.gridx = 1; gbc.gridy = 0; gbc.weightx = 0.6;
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.weightx = 0.6;
         cbClientes.setPreferredSize(new java.awt.Dimension(0, 38));
         pnlGrid.add(cbClientes, gbc);
 
-        gbc.gridx = 2; gbc.gridy = 0; gbc.weightx = 0.4;
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        gbc.weightx = 0.4;
         pnlGrid.add(lblTipoCliente, gbc);
 
         // Fila 1: Producto, Cantidad y Agregar
-        gbc.gridx = 0; gbc.gridy = 1; gbc.weightx = 0;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.weightx = 0;
         pnlGrid.add(lblProducto, gbc);
 
-        gbc.gridx = 1; gbc.gridy = 1; gbc.weightx = 0.6;
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        gbc.weightx = 0.6;
         cbProductos.setPreferredSize(new java.awt.Dimension(0, 38));
         pnlGrid.add(cbProductos, gbc);
 
-        javax.swing.JPanel pnlCantYBtn = new javax.swing.JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 12, 0));
+        javax.swing.JPanel pnlCantYBtn = new javax.swing.JPanel(
+                new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 12, 0));
         pnlCantYBtn.setOpaque(false);
         pnlCantYBtn.add(lblCantidad);
         spCantidad.setPreferredSize(new java.awt.Dimension(70, 38));
         pnlCantYBtn.add(spCantidad);
         pnlCantYBtn.add(btnAgregar);
 
-        gbc.gridx = 2; gbc.gridy = 1; gbc.weightx = 0.4;
+        gbc.gridx = 2;
+        gbc.gridy = 1;
+        gbc.weightx = 0.4;
         pnlGrid.add(pnlCantYBtn, gbc);
 
         cardCabecera.add(pnlGrid, java.awt.BorderLayout.CENTER);
@@ -503,7 +547,8 @@ public class FrmVenta extends javax.swing.JFrame {
         cardPie.add(btnEliminarItem, java.awt.BorderLayout.WEST);
 
         // Centro/Derecha: Subtotal, TOTAL grande y Cobrar Venta
-        javax.swing.JPanel pnlTotales = new javax.swing.JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 24, 0));
+        javax.swing.JPanel pnlTotales = new javax.swing.JPanel(
+                new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 24, 0));
         pnlTotales.setOpaque(false);
         pnlTotales.add(lblSubtotal);
         pnlTotales.add(lblTotal);

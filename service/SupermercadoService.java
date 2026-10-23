@@ -28,6 +28,7 @@ public class SupermercadoService {
         return instancia;
     }
 
+    // almacena catalogo productos y datos del personal
     private List<Producto> productosDisponibles;
     private List<Cliente> clientes;
     private List<Empleado> empleados;

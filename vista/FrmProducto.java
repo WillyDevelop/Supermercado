@@ -39,6 +39,8 @@ import javax.swing.table.DefaultTableModel;
 public class FrmProducto extends javax.swing.JFrame {
 
     private CtrlProducto ctrlProd = new CtrlProducto(); // constructor
+    private Producto productoSeleccionado = null;
+    private JLabel lblFormTitle;
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmProducto.class.getName());
 
@@ -379,10 +381,22 @@ public class FrmProducto extends javax.swing.JFrame {
         cardForm.setPreferredSize(new java.awt.Dimension(380, 0));
         cardForm.setLayout(new java.awt.BorderLayout(0, 16));
 
-        javax.swing.JLabel lblFormTitle = new javax.swing.JLabel("Datos del Registro");
+        javax.swing.JPanel pnlFormHeader = new javax.swing.JPanel(new java.awt.BorderLayout(8, 0));
+        pnlFormHeader.setOpaque(false);
+
+        lblFormTitle = new javax.swing.JLabel("Datos del Registro");
         lblFormTitle.setFont(UITheme.FONT_CARD_TITLE);
         lblFormTitle.setForeground(UITheme.COLOR_TEXT_MAIN);
-        cardForm.add(lblFormTitle, java.awt.BorderLayout.NORTH);
+        pnlFormHeader.add(lblFormTitle, java.awt.BorderLayout.CENTER);
+
+        JButton btnLimpiar = new JButton("Limpiar");
+        UITheme.styleSecondaryButton(btnLimpiar);
+        btnLimpiar.setPreferredSize(new java.awt.Dimension(80, 28));
+        btnLimpiar.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        btnLimpiar.addActionListener(e -> limpiarCampos());
+        pnlFormHeader.add(btnLimpiar, java.awt.BorderLayout.EAST);
+
+        cardForm.add(pnlFormHeader, java.awt.BorderLayout.NORTH);
 
         // Campos del formulario con GridBagLayout
         javax.swing.JPanel pnlCampos = new javax.swing.JPanel(new java.awt.GridBagLayout());
@@ -438,6 +452,7 @@ public class FrmProducto extends javax.swing.JFrame {
 
         javax.swing.JPanel pnlSecundarios = new javax.swing.JPanel(new java.awt.GridLayout(1, 2, 10, 0));
         pnlSecundarios.setOpaque(false);
+        btnConfirmarCambios.setText("Actualizar");
         btnConfirmarCambios.setPreferredSize(new java.awt.Dimension(0, 40));
         btnEliminar.setPreferredSize(new java.awt.Dimension(0, 40));
         pnlSecundarios.add(btnConfirmarCambios);
@@ -469,27 +484,41 @@ public class FrmProducto extends javax.swing.JFrame {
     }
 
     private void btnGuardarActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        if (productoSeleccionado != null) {
+            guardarEdicionProducto();
+        } else {
+            guardarNuevoProducto();
+        }
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void guardarNuevoProducto() {
         try {
             String nombre = txtNombreProd.getText().trim();
-            double precio = Double.parseDouble(txtPrecio.getText().trim());
-            int stock = Integer.parseInt(txtStock.getText().trim());
-            String categoria = cmbCategoria.getSelectedItem().toString();
             if (nombre.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "El nombre no puede estar vacío.");
                 return;
             }
+            double precio = Double.parseDouble(txtPrecio.getText().trim());
             if (precio < 0) {
                 JOptionPane.showMessageDialog(this, "El precio no puede ser menor a 0.");
                 return;
             }
+            int stock = Integer.parseInt(txtStock.getText().trim());
             if (stock < 0) {
                 JOptionPane.showMessageDialog(this, "El stock no puede ser menor a 0.");
                 return;
             }
+            String categoria = cmbCategoria.getSelectedItem().toString();
             Producto nuevo = null;
             if (categoria.equalsIgnoreCase("ALIMENTICIO")) {
                 boolean perecedero = chkPerecedero.isSelected();
-                int dias = perecedero ? Integer.parseInt(txtDiasCaducidad.getText().trim()) : 0;
+                int dias = 0;
+                if (perecedero) {
+                    String strDias = txtDiasCaducidad.getText().trim();
+                    if (!strDias.isEmpty()) {
+                        dias = Integer.parseInt(strDias);
+                    }
+                }
                 LocalDate caducidad = LocalDate.now().plusDays(dias);
                 nuevo = new ProductoAlimenticio(nombre, (int) precio, "Alimenticio", caducidad, perecedero, stock);
             } else if (categoria.equalsIgnoreCase("ELECTRONICO")) {
@@ -509,62 +538,66 @@ public class FrmProducto extends javax.swing.JFrame {
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Por favor ingrese números válidos en precio, stock, días o garantía.");
         }
-    }//GEN-LAST:event_btnGuardarActionPerformed
+    }
 
-    private void btnConfirmarCambiosActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnConfirmarCambiosActionPerformed
-        int fila = tblProds.getSelectedRow(); // getSelectedRow al seleccionar una fila trae su contenido y lo almacena como un objeto llamdao fila
-        if (fila == -1) {
-            JOptionPane.showMessageDialog(this, "Seleccione un producto de la tabla para editar");
+    private void guardarEdicionProducto() {
+        if (productoSeleccionado == null) {
+            JOptionPane.showMessageDialog(this, "Seleccione un producto de la tabla para editar.");
             return;
         }
 
         try {
             String nuevoNombre = txtNombreProd.getText().trim();
             if (nuevoNombre.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "El nombre no puede estar vacio");
+                JOptionPane.showMessageDialog(this, "El nombre no puede estar vacío.");
                 return;
             }
             double nuevoPrecio = Double.parseDouble(txtPrecio.getText().trim());
             if (nuevoPrecio < 0) {
-                JOptionPane.showMessageDialog(this, "El precio no puede ser menos a cero 0");
+                JOptionPane.showMessageDialog(this, "El precio no puede ser menor a 0.");
                 return;
             }
             int nuevoStock = Integer.parseInt(txtStock.getText().trim());
             if (nuevoStock < 0) {
-                JOptionPane.showMessageDialog(this, "El stock no puede ser menor a 0");
+                JOptionPane.showMessageDialog(this, "El stock no puede ser menor a 0.");
                 return;
             }
 
-            Producto editar = ctrlProd.listarProductos().get(fila);
             String categoriaSeleccionada = cmbCategoria.getSelectedItem().toString();
-            String categoriaOriginal = editar.getCategoria().replace("ó", "o").replace("Ó", "O");
+            String categoriaOriginal = productoSeleccionado.getCategoria().replace("ó", "o").replace("Ó", "O");
 
             if (!categoriaOriginal.equalsIgnoreCase(categoriaSeleccionada)) {
-                JOptionPane.showMessageDialog(this, "Por favor no modifique la categoria del producto");
+                JOptionPane.showMessageDialog(this, "Por favor no modifique la categoría del producto.");
                 return;
             }
 
-            editar.setNombre(nuevoNombre);
-            editar.setPrecio(nuevoPrecio);
-            editar.setStock(nuevoStock);
+            productoSeleccionado.setNombre(nuevoNombre);
+            productoSeleccionado.setPrecio(nuevoPrecio);
+            productoSeleccionado.setStock(nuevoStock);
 
-            if (editar instanceof ProductoAlimenticio) {
-                ProductoAlimenticio a = (ProductoAlimenticio) editar;
+            if (productoSeleccionado instanceof ProductoAlimenticio) {
+                ProductoAlimenticio a = (ProductoAlimenticio) productoSeleccionado;
                 boolean perecedero = chkPerecedero.isSelected();
-                int dias = perecedero ? Integer.parseInt(txtDiasCaducidad.getText().trim()) : 0;
+                int dias = 0;
+                if (perecedero) {
+                    String strDias = txtDiasCaducidad.getText().trim();
+                    if (!strDias.isEmpty()) {
+                        dias = Integer.parseInt(strDias);
+                    }
+                }
                 a.setFechaCaducicad(LocalDate.now().plusDays(dias));
                 a.setEsPerecedero(perecedero);
-            } else if (editar instanceof ProductoElectronico) {
-                ProductoElectronico e = (ProductoElectronico) editar;
+            } else if (productoSeleccionado instanceof ProductoElectronico) {
+                ProductoElectronico e = (ProductoElectronico) productoSeleccionado;
                 int garantia = Integer.parseInt(txtGarantia.getText().trim());
                 e.setGarantia(garantia);
-            } else if (editar instanceof ProductoHigiene) {
-                ProductoHigiene h = (ProductoHigiene) editar;
+            } else if (productoSeleccionado instanceof ProductoHigiene) {
+                ProductoHigiene h = (ProductoHigiene) productoSeleccionado;
                 TipoDeUso uso = TipoDeUso.valueOf(cmbTipoUso.getSelectedItem().toString());
                 h.setTipoDeUso(uso);
             }
 
-            ctrlProd.actualizarProducto(editar);
+            ctrlProd.actualizarProducto(productoSeleccionado);
             llenarTabla();
             limpiarCampos();
             JOptionPane.showMessageDialog(this, "¡Producto editado con éxito!");
@@ -572,21 +605,41 @@ public class FrmProducto extends javax.swing.JFrame {
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Por favor ingrese números válidos en precio, stock, días o garantía.");
         }
+    }
+
+    private void btnConfirmarCambiosActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnConfirmarCambiosActionPerformed
+        if (productoSeleccionado != null) {
+            guardarEdicionProducto();
+        } else {
+            int fila = tblProds.getSelectedRow();
+            if (fila != -1 && fila < ctrlProd.listarProductos().size()) {
+                productoSeleccionado = ctrlProd.listarProductos().get(fila);
+                guardarEdicionProducto();
+            } else {
+                JOptionPane.showMessageDialog(this, "Seleccione un producto de la tabla para editar.");
+            }
+        }
     }//GEN-LAST:event_btnConfirmarCambiosActionPerformed
 
     private void btnEliminarActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         int fila = tblProds.getSelectedRow();
-        if (fila == -1) {
+        if (fila == -1 && productoSeleccionado == null) {
             JOptionPane.showMessageDialog(this, "Seleccione un producto de la tabla para eliminar.");
             return;
         }
         int confirmacion = JOptionPane.showConfirmDialog(
                 this, "¿Está seguro de eliminar este producto?", "Confirmar", JOptionPane.YES_NO_OPTION);
         if (confirmacion == JOptionPane.YES_OPTION) {
-            Producto p = ctrlProd.listarProductos().get(fila);
-            ctrlProd.eliminarProducto(p.getCodigo());
-            llenarTabla();
-            JOptionPane.showMessageDialog(this, "Producto eliminado.");
+            Producto p = productoSeleccionado;
+            if (p == null && fila != -1 && fila < ctrlProd.listarProductos().size()) {
+                p = ctrlProd.listarProductos().get(fila);
+            }
+            if (p != null) {
+                ctrlProd.eliminarProducto(p.getCodigo());
+                llenarTabla();
+                limpiarCampos();
+                JOptionPane.showMessageDialog(this, "Producto eliminado.");
+            }
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
@@ -620,33 +673,36 @@ public class FrmProducto extends javax.swing.JFrame {
 
     private void tblProdsMouseClicked(MouseEvent evt) {//GEN-FIRST:event_tblProdsMouseClicked
         int fila = tblProds.getSelectedRow();
-        if (fila != -1) {
-            Producto editar = ctrlProd.listarProductos().get(fila);
+        if (fila != -1 && fila < ctrlProd.listarProductos().size()) {
+            productoSeleccionado = ctrlProd.listarProductos().get(fila);
 
-            txtNombreProd.setText(editar.getNombre());
-            txtPrecio.setText(String.valueOf(editar.getPrecio()));
-            txtStock.setText(String.valueOf(editar.getStock()));
+            txtNombreProd.setText(productoSeleccionado.getNombre());
+            txtPrecio.setText(String.valueOf(productoSeleccionado.getPrecio()));
+            txtStock.setText(String.valueOf(productoSeleccionado.getStock()));
 
-            // seteo de los campos, nombreProducto, precioProducto, categoriaProducto y detalleProducto    
-            
-            if (editar instanceof ProductoAlimenticio) {
-                ProductoAlimenticio a = (ProductoAlimenticio) editar;
+            if (lblFormTitle != null) {
+                lblFormTitle.setText("Editando: " + productoSeleccionado.getNombre());
+            }
+            btnGuardar.setText("Guardar Cambios");
+
+            if (productoSeleccionado instanceof ProductoAlimenticio) {
+                ProductoAlimenticio a = (ProductoAlimenticio) productoSeleccionado;
                 cmbCategoria.setSelectedItem("ALIMENTICIO");
                 chkPerecedero.setSelected(a.isEsPerecedero());
                 jLabel5.setVisible(a.isEsPerecedero());
                 txtDiasCaducidad.setVisible(a.isEsPerecedero());
-                if (a.isEsPerecedero()) {
+                if (a.isEsPerecedero() && a.getFechaCaducicad() != null) {
                     long dias = java.time.temporal.ChronoUnit.DAYS.between(LocalDate.now(), a.getFechaCaducicad());
-                    txtDiasCaducidad.setText(String.valueOf(dias));
+                    txtDiasCaducidad.setText(String.valueOf(Math.max(0, dias)));
                 } else {
                     txtDiasCaducidad.setText("");
                 }
-            } else if (editar instanceof ProductoElectronico) {
-                ProductoElectronico e = (ProductoElectronico) editar;
+            } else if (productoSeleccionado instanceof ProductoElectronico) {
+                ProductoElectronico e = (ProductoElectronico) productoSeleccionado;
                 cmbCategoria.setSelectedItem("ELECTRONICO");
                 txtGarantia.setText(String.valueOf(e.getGarantia()));
-            } else if (editar instanceof ProductoHigiene) {
-                ProductoHigiene h = (ProductoHigiene) editar;
+            } else if (productoSeleccionado instanceof ProductoHigiene) {
+                ProductoHigiene h = (ProductoHigiene) productoSeleccionado;
                 cmbCategoria.setSelectedItem("HIGIENE");
                 cmbTipoUso.setSelectedItem(h.getTipoDeUso().toString());
             }
@@ -685,6 +741,7 @@ public class FrmProducto extends javax.swing.JFrame {
     }
 
     private void limpiarCampos() {
+        productoSeleccionado = null;
         txtNombreProd.setText("");
         txtPrecio.setText("");
         txtStock.setText("");
@@ -693,6 +750,12 @@ public class FrmProducto extends javax.swing.JFrame {
         chkPerecedero.setSelected(false);
         jLabel5.setVisible(false);
         txtDiasCaducidad.setVisible(false);
+        cmbCategoria.setSelectedIndex(0);
+        tblProds.clearSelection();
+        btnGuardar.setText("Guardar");
+        if (lblFormTitle != null) {
+            lblFormTitle.setText("Datos del Registro");
+        }
     }
 
     public static void main(String args[]) {

@@ -21,9 +21,10 @@ public class CtrlVenta {
     private List<Producto> carrito;
 
     public CtrlVenta() {
-        this.servicio = SupermercadoService.getInstancia();
+        this.servicio = SupermercadoService.getInstancia();// aplico patron singleton
         this.carrito = new ArrayList<>();
 
+        // creo productos si no hay - para pruebas
         if (this.servicio.getProductosDisponibles().isEmpty()) {
             this.servicio.agregarProducto(new ProductoAlimenticio(
                     "Arroz Gallo Oro", 1500, "Alimenticio", LocalDate.now().plusDays(30), true, 20));
@@ -94,9 +95,10 @@ public class CtrlVenta {
     public double calcularTotal(Cliente cliente) {
         double total = 0.0;
         for (Producto p : carrito) {
-            double precioFinalProducto = p.calcularPrecioFinal();
+            double precioFinalProducto = p.calcularPrecioFinal();// polimorfismo
 
-            // Si el cliente es VIP, aplicamos la estimación de descuento para visualizar en pantalla
+            // Si el cliente es VIP, aplicamos la estimación de descuento para visualizar en
+            // pantalla
             if (cliente instanceof ClienteVIP) {
                 precioFinalProducto = precioFinalProducto * 0.85; // 15% desc. estimado
             }
@@ -117,7 +119,8 @@ public class CtrlVenta {
             throw new IllegalStateException("El carrito de compras está vacío. Agregue productos antes de cobrar.");
         }
 
-        // Ejecuta la compra en el servicio (descuenta stock en memoria y asigna compras al cliente)
+        // Ejecuta la compra en el servicio (descuenta stock en memoria y asigna compras
+        // al cliente)
         servicio.registrarCompra(cliente, carrito);
 
         // Si la compra fue exitosa, vaciamos el carrito temporal
