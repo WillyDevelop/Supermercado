@@ -17,7 +17,7 @@ public class Main {
         SwingUtilities.invokeLater(() -> {
             try {
                 // Aplica el estilo visual nativo del sistema operativo
-                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
             } catch (Exception e) {
                 e.printStackTrace();
             }
