@@ -10,17 +10,22 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-public class FrmVenta extends javax.swing.JDialog {
+public class FrmVenta extends javax.swing.JFrame {
 
     private CtrlVenta ctrlVenta = new CtrlVenta();
     private List<Cliente> listaClientes;
     private List<Producto> listaProductosDisponibles;
     private DefaultTableModel modeloTabla;
 
+    public FrmVenta() {
+        this(null, false);
+    }
+
     public FrmVenta(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+        super();
         initComponents();
         configurarPersonalizado();
+        aplicarEstiloModerno();
         cargarDatos();
     }
 
@@ -377,6 +382,141 @@ public class FrmVenta extends javax.swing.JDialog {
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnVolverActionPerformed
         ctrlVenta.volverAlMenu(this);
     }// GEN-LAST:event_btnVolverActionPerformed
+
+    private void aplicarEstiloModerno() {
+        UITheme.setupWindow(this, "Supermercado - Punto de Venta y Caja");
+
+        // Estilos de botones
+        UITheme.stylePrimaryButton(btnAgregar);
+        btnAgregar.setPreferredSize(new java.awt.Dimension(180, 40));
+
+        UITheme.styleSuccessButton(btnFinalizarVenta);
+        btnFinalizarVenta.setPreferredSize(new java.awt.Dimension(160, 42));
+
+        UITheme.styleDangerButton(btnEliminarItem);
+        btnEliminarItem.setPreferredSize(new java.awt.Dimension(180, 40));
+
+        // Estilos de inputs
+        UITheme.styleComboBox(cbClientes);
+        UITheme.styleComboBox(cbProductos);
+        UITheme.styleSpinner(spCantidad);
+
+        // Estilos de labels
+        UITheme.styleLabel(lblCliente);
+        UITheme.styleLabel(lblProducto);
+        UITheme.styleLabel(lblCantidad);
+
+        lblTipoCliente.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 13));
+        lblTipoCliente.setForeground(new java.awt.Color(71, 85, 105)); // #475569
+
+        lblSubtotal.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 16));
+        lblSubtotal.setForeground(new java.awt.Color(100, 116, 139)); // #64748B
+
+        lblTotal.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 24));
+        lblTotal.setForeground(new java.awt.Color(5, 150, 105)); // #059669
+
+        // Estilo de tabla
+        UITheme.styleTable(tablaCarrito, jScrollPane1);
+
+        // --- REESTRUCTURAR LAYOUT RESPONSIVO ---
+        getContentPane().removeAll();
+        getContentPane().setLayout(new java.awt.BorderLayout());
+        getContentPane().setBackground(UITheme.COLOR_BG_CANVAS);
+
+        // 1. Header / Barra Superior Ejecutiva (#0F172A, 75px) con botón Volver integrado
+        javax.swing.JPanel pnlTop = UITheme.createHeader(
+                "SUPERMERCADO · Caja y Punto de Venta",
+                "Registro de operaciones, carrito y facturación",
+                btnVolver
+        );
+        getContentPane().add(pnlTop, java.awt.BorderLayout.NORTH);
+
+        // 2. Cuerpo Principal (#F1F5F9 con padding de 32px a 40px)
+        javax.swing.JPanel pnlCanvas = new javax.swing.JPanel(new java.awt.BorderLayout(0, 20));
+        pnlCanvas.setBackground(UITheme.COLOR_BG_CANVAS);
+        pnlCanvas.setBorder(new javax.swing.border.EmptyBorder(32, 40, 36, 40));
+
+        // --- Tarjeta Superior (Cargar Carrito) ---
+        javax.swing.JPanel cardCabecera = UITheme.createCardPanel(24, 28, 24, 28);
+        cardCabecera.setLayout(new java.awt.BorderLayout(0, 16));
+
+        javax.swing.JLabel lblCabeceraTitle = new javax.swing.JLabel("Cargar Productos al Carrito");
+        lblCabeceraTitle.setFont(UITheme.FONT_CARD_TITLE);
+        lblCabeceraTitle.setForeground(UITheme.COLOR_TEXT_MAIN);
+        cardCabecera.add(lblCabeceraTitle, java.awt.BorderLayout.NORTH);
+
+        javax.swing.JPanel pnlGrid = new javax.swing.JPanel(new java.awt.GridBagLayout());
+        pnlGrid.setOpaque(false);
+        java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+        gbc.insets = new java.awt.Insets(6, 8, 6, 8);
+        gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
+
+        // Fila 0: Cliente
+        gbc.gridx = 0; gbc.gridy = 0; gbc.weightx = 0;
+        pnlGrid.add(lblCliente, gbc);
+
+        gbc.gridx = 1; gbc.gridy = 0; gbc.weightx = 0.6;
+        cbClientes.setPreferredSize(new java.awt.Dimension(0, 38));
+        pnlGrid.add(cbClientes, gbc);
+
+        gbc.gridx = 2; gbc.gridy = 0; gbc.weightx = 0.4;
+        pnlGrid.add(lblTipoCliente, gbc);
+
+        // Fila 1: Producto, Cantidad y Agregar
+        gbc.gridx = 0; gbc.gridy = 1; gbc.weightx = 0;
+        pnlGrid.add(lblProducto, gbc);
+
+        gbc.gridx = 1; gbc.gridy = 1; gbc.weightx = 0.6;
+        cbProductos.setPreferredSize(new java.awt.Dimension(0, 38));
+        pnlGrid.add(cbProductos, gbc);
+
+        javax.swing.JPanel pnlCantYBtn = new javax.swing.JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 12, 0));
+        pnlCantYBtn.setOpaque(false);
+        pnlCantYBtn.add(lblCantidad);
+        spCantidad.setPreferredSize(new java.awt.Dimension(70, 38));
+        pnlCantYBtn.add(spCantidad);
+        pnlCantYBtn.add(btnAgregar);
+
+        gbc.gridx = 2; gbc.gridy = 1; gbc.weightx = 0.4;
+        pnlGrid.add(pnlCantYBtn, gbc);
+
+        cardCabecera.add(pnlGrid, java.awt.BorderLayout.CENTER);
+        pnlCanvas.add(cardCabecera, java.awt.BorderLayout.NORTH);
+
+        // --- Tarjeta Central (Tabla del Carrito) ---
+        javax.swing.JPanel cardTabla = UITheme.createCardPanel(24, 28, 24, 28);
+        cardTabla.setLayout(new java.awt.BorderLayout(0, 14));
+
+        javax.swing.JLabel lblTablaTitle = new javax.swing.JLabel("Detalle del Carrito de Compras");
+        lblTablaTitle.setFont(UITheme.FONT_CARD_TITLE);
+        lblTablaTitle.setForeground(UITheme.COLOR_TEXT_MAIN);
+        cardTabla.add(lblTablaTitle, java.awt.BorderLayout.NORTH);
+        cardTabla.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        pnlCanvas.add(cardTabla, java.awt.BorderLayout.CENTER);
+
+        // --- Tarjeta Inferior (Barra de Totales y Cobro) ---
+        javax.swing.JPanel cardPie = UITheme.createCardPanel(20, 28, 20, 28);
+        cardPie.setLayout(new java.awt.BorderLayout(16, 0));
+
+        // Izquierda: Quitar seleccionado
+        cardPie.add(btnEliminarItem, java.awt.BorderLayout.WEST);
+
+        // Centro/Derecha: Subtotal, TOTAL grande y Cobrar Venta
+        javax.swing.JPanel pnlTotales = new javax.swing.JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 24, 0));
+        pnlTotales.setOpaque(false);
+        pnlTotales.add(lblSubtotal);
+        pnlTotales.add(lblTotal);
+        pnlTotales.add(btnFinalizarVenta);
+
+        cardPie.add(pnlTotales, java.awt.BorderLayout.EAST);
+        pnlCanvas.add(cardPie, java.awt.BorderLayout.SOUTH);
+
+        getContentPane().add(pnlCanvas, java.awt.BorderLayout.CENTER);
+
+        revalidate();
+        repaint();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;

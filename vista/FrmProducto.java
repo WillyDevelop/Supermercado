@@ -36,23 +36,20 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author sraco
  */
-public class FrmProducto extends javax.swing.JDialog {
+public class FrmProducto extends javax.swing.JFrame {
 
     private CtrlProducto ctrlProd = new CtrlProducto(); // constructor
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmProducto.class.getName());
 
-    /**
-     * Creates new form FrmProducto
-     */
+    public FrmProducto() {
+        this(null, false);
+    }
+
     public FrmProducto(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+        super();
         initComponents();
-        setLocationRelativeTo(null);
-        setTitle("Supermercado - Gestión de Productos");
-        jLabel5.setVisible(false);
-        txtDiasCaducidad.setVisible(false);
-        llenarTabla();
+        aplicarEstiloModerno();
     }
 
     /**
@@ -317,6 +314,159 @@ public class FrmProducto extends javax.swing.JDialog {
     private void btnVolverActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         ctrlProd.volverAlMenu(this);
     }//GEN-LAST:event_btnVolverActionPerformed
+
+    private void aplicarEstiloModerno() {
+        UITheme.setupWindow(this, "Supermercado - Gestión de Productos");
+
+        // Estilos de botones
+        UITheme.stylePrimaryButton(btnGuardar);
+        UITheme.styleSecondaryButton(btnConfirmarCambios);
+        UITheme.styleDangerButton(btnEliminar);
+
+        // Estilos de inputs
+        UITheme.styleTextField(txtNombreProd);
+        UITheme.styleTextField(txtPrecio);
+        UITheme.styleTextField(txtStock);
+        UITheme.styleComboBox(cmbCategoria);
+        UITheme.styleTextField(txtDiasCaducidad);
+        UITheme.styleTextField(txtGarantia);
+        UITheme.styleComboBox(cmbTipoUso);
+
+        // Checkbox perecedero
+        chkPerecedero.setFont(UITheme.FONT_LABEL);
+        chkPerecedero.setForeground(UITheme.COLOR_TEXT_MAIN);
+        chkPerecedero.setOpaque(false);
+        chkPerecedero.setFocusPainted(false);
+
+        // Estilos de labels
+        UITheme.styleLabel(lvlNombreProd);
+        UITheme.styleLabel(lblPrecio);
+        UITheme.styleLabel(lblStock);
+        UITheme.styleLabel(lvlCategoria);
+        UITheme.styleLabel(jLabel5);
+        UITheme.styleLabel(lblGarantia);
+        UITheme.styleLabel(lblHigiene);
+
+        // Estilo de tabla
+        UITheme.styleTable(tblProds, jScrollPane1);
+
+        // Fondos de subpaneles de categoría
+        pnlContenedor.setBackground(UITheme.COLOR_SURFACE);
+        pnlAlimento.setBackground(UITheme.COLOR_SURFACE);
+        pnlElectronico.setBackground(UITheme.COLOR_SURFACE);
+        pnlHigiene.setBackground(UITheme.COLOR_SURFACE);
+
+        // --- REESTRUCTURAR LAYOUT RESPONSIVO ---
+        getContentPane().removeAll();
+        getContentPane().setLayout(new java.awt.BorderLayout());
+        getContentPane().setBackground(UITheme.COLOR_BG_CANVAS);
+
+        // 1. Barra Superior Ejecutiva (#0F172A, 75px) con botón Volver integrado
+        javax.swing.JPanel pnlTop = UITheme.createHeader(
+                "SUPERMERCADO · Productos e Inventario",
+                "Gestión de catálogo, precios y control de stock",
+                btnVolver
+        );
+        getContentPane().add(pnlTop, java.awt.BorderLayout.NORTH);
+
+        // 2. Cuerpo Principal (#F1F5F9 con padding de 32px a 40px)
+        javax.swing.JPanel pnlCuerpo = new javax.swing.JPanel(new java.awt.BorderLayout(28, 0));
+        pnlCuerpo.setOpaque(false);
+        pnlCuerpo.setBorder(new javax.swing.border.EmptyBorder(32, 40, 36, 40));
+
+        // --- Tarjeta izquierda (Formulario - Ancho fijo ~380px) ---
+        javax.swing.JPanel cardForm = UITheme.createCardPanel(28, 28, 28, 28);
+        cardForm.setPreferredSize(new java.awt.Dimension(380, 0));
+        cardForm.setLayout(new java.awt.BorderLayout(0, 16));
+
+        javax.swing.JLabel lblFormTitle = new javax.swing.JLabel("Datos del Registro");
+        lblFormTitle.setFont(UITheme.FONT_CARD_TITLE);
+        lblFormTitle.setForeground(UITheme.COLOR_TEXT_MAIN);
+        cardForm.add(lblFormTitle, java.awt.BorderLayout.NORTH);
+
+        // Campos del formulario con GridBagLayout
+        javax.swing.JPanel pnlCampos = new javax.swing.JPanel(new java.awt.GridBagLayout());
+        pnlCampos.setOpaque(false);
+        java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+        gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+        gbc.insets = new java.awt.Insets(4, 0, 4, 0);
+
+        int row = 0;
+        gbc.gridx = 0; gbc.gridy = row++;
+        pnlCampos.add(lvlNombreProd, gbc);
+        gbc.gridx = 0; gbc.gridy = row++;
+        pnlCampos.add(txtNombreProd, gbc);
+
+        // Fila dividida: Precio y Stock
+        javax.swing.JPanel pnlPreciStock = new javax.swing.JPanel(new java.awt.GridLayout(1, 2, 12, 0));
+        pnlPreciStock.setOpaque(false);
+        javax.swing.JPanel colPrecio = new javax.swing.JPanel(new java.awt.BorderLayout(0, 4));
+        colPrecio.setOpaque(false);
+        colPrecio.add(lblPrecio, java.awt.BorderLayout.NORTH);
+        colPrecio.add(txtPrecio, java.awt.BorderLayout.CENTER);
+
+        javax.swing.JPanel colStock = new javax.swing.JPanel(new java.awt.BorderLayout(0, 4));
+        colStock.setOpaque(false);
+        colStock.add(lblStock, java.awt.BorderLayout.NORTH);
+        colStock.add(txtStock, java.awt.BorderLayout.CENTER);
+
+        pnlPreciStock.add(colPrecio);
+        pnlPreciStock.add(colStock);
+
+        gbc.gridx = 0; gbc.gridy = row++;
+        pnlCampos.add(pnlPreciStock, gbc);
+
+        gbc.gridx = 0; gbc.gridy = row++;
+        pnlCampos.add(lvlCategoria, gbc);
+        gbc.gridx = 0; gbc.gridy = row++;
+        pnlCampos.add(cmbCategoria, gbc);
+
+        // Panel de categoría dinámico
+        pnlContenedor.setPreferredSize(new java.awt.Dimension(0, 80));
+        gbc.gridx = 0; gbc.gridy = row++;
+        pnlCampos.add(pnlContenedor, gbc);
+
+        cardForm.add(pnlCampos, java.awt.BorderLayout.CENTER);
+
+        // Botones de acción del formulario
+        javax.swing.JPanel pnlBotonesForm = new javax.swing.JPanel(new java.awt.GridLayout(2, 1, 0, 10));
+        pnlBotonesForm.setOpaque(false);
+
+        btnGuardar.setPreferredSize(new java.awt.Dimension(0, 40));
+        pnlBotonesForm.add(btnGuardar);
+
+        javax.swing.JPanel pnlSecundarios = new javax.swing.JPanel(new java.awt.GridLayout(1, 2, 10, 0));
+        pnlSecundarios.setOpaque(false);
+        btnConfirmarCambios.setPreferredSize(new java.awt.Dimension(0, 40));
+        btnEliminar.setPreferredSize(new java.awt.Dimension(0, 40));
+        pnlSecundarios.add(btnConfirmarCambios);
+        pnlSecundarios.add(btnEliminar);
+        pnlBotonesForm.add(pnlSecundarios);
+
+        cardForm.add(pnlBotonesForm, java.awt.BorderLayout.SOUTH);
+        pnlCuerpo.add(cardForm, java.awt.BorderLayout.WEST);
+
+        // --- Tarjeta derecha (Tabla de Inventario - Ocupa todo el resto) ---
+        javax.swing.JPanel cardTabla = UITheme.createCardPanel(28, 28, 28, 28);
+        cardTabla.setLayout(new java.awt.BorderLayout(0, 16));
+
+        lblInventario.setFont(UITheme.FONT_CARD_TITLE);
+        lblInventario.setForeground(UITheme.COLOR_TEXT_MAIN);
+        lblInventario.setText("Inventario de Productos");
+        cardTabla.add(lblInventario, java.awt.BorderLayout.NORTH);
+        cardTabla.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        pnlCuerpo.add(cardTabla, java.awt.BorderLayout.CENTER);
+        getContentPane().add(pnlCuerpo, java.awt.BorderLayout.CENTER);
+
+        jLabel5.setVisible(false);
+        txtDiasCaducidad.setVisible(false);
+        llenarTabla();
+
+        revalidate();
+        repaint();
+    }
 
     private void btnGuardarActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         try {

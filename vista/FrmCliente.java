@@ -8,19 +8,18 @@ package com.example.vista;
  *
  * @author sraco
  */
-public class FrmCliente extends javax.swing.JDialog {
+public class FrmCliente extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmCliente.class.getName());
 
-    /**
-     * Creates new form FrmProducto
-     */
+    public FrmCliente() {
+        this(null, false);
+    }
+
     public FrmCliente(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+        super();
         initComponents();
-        
-        // Ocultar el campo de descuento por defecto al iniciar (Cliente Regular)
-        limpiarCampos();
+        aplicarEstiloModerno();
     }
 
     /**
@@ -298,6 +297,126 @@ public class FrmCliente extends javax.swing.JDialog {
         LabelDescuento.setVisible(false);
     
     TextDNI.setEditable(true);
+    }
+
+    private void aplicarEstiloModerno() {
+        UITheme.setupWindow(this, "Supermercado - Registro de Clientes");
+
+        // Estilos de botones
+        UITheme.stylePrimaryButton(BotonRegistrar);
+        UITheme.styleSecondaryButton(BotonEditar);
+        UITheme.styleDangerButton(BotonEliminar);
+
+        // Estilos de inputs
+        UITheme.styleTextField(TextDNI);
+        UITheme.styleTextField(TextNombre);
+        UITheme.styleComboBox(ComboBoxClienteTipo);
+        UITheme.styleTextField(LabelDescuento);
+
+        // Estilos de labels
+        UITheme.styleLabel(LabelDNI);
+        UITheme.styleLabel(LabelNombre);
+        UITheme.styleLabel(TextDescuento);
+
+        // Estilo de tabla
+        UITheme.styleTable(jTable1, jScrollPane1);
+
+        // --- REESTRUCTURAR LAYOUT RESPONSIVO ---
+        getContentPane().removeAll();
+        getContentPane().setLayout(new java.awt.BorderLayout());
+        getContentPane().setBackground(UITheme.COLOR_BG_CANVAS);
+
+        // 1. Barra Superior Ejecutiva (#0F172A, 75px) con botón Volver integrado
+        javax.swing.JPanel pnlTop = UITheme.createHeader(
+                "SUPERMERCADO · Clientes y Socios VIP",
+                "Administración de padrón y descuentos exclusivos",
+                BotonVolver
+        );
+        getContentPane().add(pnlTop, java.awt.BorderLayout.NORTH);
+
+        // 2. Cuerpo Principal (#F1F5F9 con padding de 32px a 40px)
+        javax.swing.JPanel pnlCuerpo = new javax.swing.JPanel(new java.awt.BorderLayout(28, 0));
+        pnlCuerpo.setOpaque(false);
+        pnlCuerpo.setBorder(new javax.swing.border.EmptyBorder(32, 40, 36, 40));
+
+        // --- Tarjeta izquierda (Formulario - Ancho fijo ~380px) ---
+        javax.swing.JPanel cardForm = UITheme.createCardPanel(28, 28, 28, 28);
+        cardForm.setPreferredSize(new java.awt.Dimension(380, 0));
+        cardForm.setLayout(new java.awt.BorderLayout(0, 16));
+
+        javax.swing.JLabel lblFormTitle = new javax.swing.JLabel("Datos del Registro");
+        lblFormTitle.setFont(UITheme.FONT_CARD_TITLE);
+        lblFormTitle.setForeground(UITheme.COLOR_TEXT_MAIN);
+        cardForm.add(lblFormTitle, java.awt.BorderLayout.NORTH);
+
+        // Campos del formulario con GridBagLayout
+        javax.swing.JPanel pnlCampos = new javax.swing.JPanel(new java.awt.GridBagLayout());
+        pnlCampos.setOpaque(false);
+        java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+        gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+        gbc.insets = new java.awt.Insets(4, 0, 4, 0);
+
+        int row = 0;
+        gbc.gridx = 0; gbc.gridy = row++;
+        pnlCampos.add(LabelDNI, gbc);
+        gbc.gridx = 0; gbc.gridy = row++;
+        pnlCampos.add(TextDNI, gbc);
+
+        gbc.gridx = 0; gbc.gridy = row++;
+        pnlCampos.add(LabelNombre, gbc);
+        gbc.gridx = 0; gbc.gridy = row++;
+        pnlCampos.add(TextNombre, gbc);
+
+        javax.swing.JLabel lblTipo = new javax.swing.JLabel("Tipo de Cliente");
+        UITheme.styleLabel(lblTipo);
+        gbc.gridx = 0; gbc.gridy = row++;
+        pnlCampos.add(lblTipo, gbc);
+        gbc.gridx = 0; gbc.gridy = row++;
+        pnlCampos.add(ComboBoxClienteTipo, gbc);
+
+        gbc.gridx = 0; gbc.gridy = row++;
+        pnlCampos.add(TextDescuento, gbc);
+        gbc.gridx = 0; gbc.gridy = row++;
+        pnlCampos.add(LabelDescuento, gbc);
+
+        cardForm.add(pnlCampos, java.awt.BorderLayout.CENTER);
+
+        // Botones de acción del formulario
+        javax.swing.JPanel pnlBotonesForm = new javax.swing.JPanel(new java.awt.GridLayout(2, 1, 0, 10));
+        pnlBotonesForm.setOpaque(false);
+
+        BotonRegistrar.setPreferredSize(new java.awt.Dimension(0, 40));
+        pnlBotonesForm.add(BotonRegistrar);
+
+        javax.swing.JPanel pnlSecundarios = new javax.swing.JPanel(new java.awt.GridLayout(1, 2, 10, 0));
+        pnlSecundarios.setOpaque(false);
+        BotonEditar.setPreferredSize(new java.awt.Dimension(0, 40));
+        BotonEliminar.setPreferredSize(new java.awt.Dimension(0, 40));
+        pnlSecundarios.add(BotonEditar);
+        pnlSecundarios.add(BotonEliminar);
+        pnlBotonesForm.add(pnlSecundarios);
+
+        cardForm.add(pnlBotonesForm, java.awt.BorderLayout.SOUTH);
+        pnlCuerpo.add(cardForm, java.awt.BorderLayout.WEST);
+
+        // --- Tarjeta derecha (Tabla - Ocupa todo el resto) ---
+        javax.swing.JPanel cardTabla = UITheme.createCardPanel(28, 28, 28, 28);
+        cardTabla.setLayout(new java.awt.BorderLayout(0, 16));
+
+        javax.swing.JLabel lblTablaTitle = new javax.swing.JLabel("Padrón de Clientes Registrados");
+        lblTablaTitle.setFont(UITheme.FONT_CARD_TITLE);
+        lblTablaTitle.setForeground(UITheme.COLOR_TEXT_MAIN);
+        cardTabla.add(lblTablaTitle, java.awt.BorderLayout.NORTH);
+        cardTabla.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        pnlCuerpo.add(cardTabla, java.awt.BorderLayout.CENTER);
+        getContentPane().add(pnlCuerpo, java.awt.BorderLayout.CENTER);
+
+        limpiarCampos();
+
+        revalidate();
+        repaint();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

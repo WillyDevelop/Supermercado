@@ -7,18 +7,20 @@ package com.example.vista;
  *
  * @author sraco
  */
-public class FrmEmpleado extends javax.swing.JDialog {
+public class FrmEmpleado extends javax.swing.JFrame {
     
     // 1. Declarar la variable del controlador
     private com.example.controlador.CtrlEmpleado ctrl;
 
+    public FrmEmpleado() {
+        this(null, false);
+    }
+
     public FrmEmpleado(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+        super();
         initComponents();
-        setTitle("FrmEmpleado - Gestión de Empleados y Salarios");
-        
-        // 2. Conectar el controlador automáticamente al abrirse
         this.ctrl = new com.example.controlador.CtrlEmpleado(this);
+        aplicarEstiloModerno();
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -314,6 +316,130 @@ public class FrmEmpleado extends javax.swing.JDialog {
         jTextField3.setText("");
         jTextField4.setText("");
         jComboBox2.setSelectedIndex(0); 
+    }
+
+    private void aplicarEstiloModerno() {
+        UITheme.setupWindow(this, "Supermercado - Gestión de Empleados y Salarios");
+
+        // Estilos de botones
+        UITheme.styleSecondaryButton(jButton1); // Calcular Salario
+        UITheme.stylePrimaryButton(jButton4);   // Registrar
+        UITheme.styleSecondaryButton(jButton5); // Editar
+        UITheme.styleDangerButton(jButton2);    // Eliminar
+
+        // Estilos de inputs
+        UITheme.styleTextField(jTextField3); // Nombre
+        UITheme.styleTextField(jTextField2); // Salario Base
+        UITheme.styleComboBox(jComboBox2);   // Cargo
+        UITheme.styleTextField(jTextField4); // Ventas / Bono
+
+        // Estilos de labels
+        UITheme.styleLabel(jLabel3); // Nombre
+        UITheme.styleLabel(jLabel4); // Salario Base
+        UITheme.styleLabel(jLabel6); // Ventas / Bono
+
+        // Estilo de tabla
+        UITheme.styleTable(jTable2, jScrollPane2);
+
+        // --- REESTRUCTURAR LAYOUT RESPONSIVO ---
+        getContentPane().removeAll();
+        getContentPane().setLayout(new java.awt.BorderLayout());
+        getContentPane().setBackground(UITheme.COLOR_BG_CANVAS);
+
+        // 1. Barra Superior Ejecutiva (#0F172A, 75px) con botón Volver integrado
+        javax.swing.JPanel pnlTop = UITheme.createHeader(
+                "SUPERMERCADO · Recursos Humanos y Salarios",
+                "Gestión de personal, cargos, bonos y sueldos",
+                jButton3
+        );
+        getContentPane().add(pnlTop, java.awt.BorderLayout.NORTH);
+
+        // 2. Cuerpo Principal (#F1F5F9 con padding de 32px a 40px)
+        javax.swing.JPanel pnlCuerpo = new javax.swing.JPanel(new java.awt.BorderLayout(28, 0));
+        pnlCuerpo.setOpaque(false);
+        pnlCuerpo.setBorder(new javax.swing.border.EmptyBorder(32, 40, 36, 40));
+
+        // --- Tarjeta izquierda (Formulario - Ancho fijo ~380px) ---
+        javax.swing.JPanel cardForm = UITheme.createCardPanel(28, 28, 28, 28);
+        cardForm.setPreferredSize(new java.awt.Dimension(380, 0));
+        cardForm.setLayout(new java.awt.BorderLayout(0, 16));
+
+        jLabel1.setFont(UITheme.FONT_CARD_TITLE);
+        jLabel1.setForeground(UITheme.COLOR_TEXT_MAIN);
+        jLabel1.setText("Datos del Registro");
+        cardForm.add(jLabel1, java.awt.BorderLayout.NORTH);
+
+        // Campos del formulario con GridBagLayout
+        javax.swing.JPanel pnlCampos = new javax.swing.JPanel(new java.awt.GridBagLayout());
+        pnlCampos.setOpaque(false);
+        java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+        gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+        gbc.insets = new java.awt.Insets(4, 0, 4, 0);
+
+        int r = 0;
+        gbc.gridx = 0; gbc.gridy = r++;
+        pnlCampos.add(jLabel3, gbc);
+        gbc.gridx = 0; gbc.gridy = r++;
+        pnlCampos.add(jTextField3, gbc);
+
+        gbc.gridx = 0; gbc.gridy = r++;
+        pnlCampos.add(jLabel4, gbc);
+        gbc.gridx = 0; gbc.gridy = r++;
+        pnlCampos.add(jTextField2, gbc);
+
+        javax.swing.JLabel lblCargo = new javax.swing.JLabel("Cargo / Rol");
+        UITheme.styleLabel(lblCargo);
+        gbc.gridx = 0; gbc.gridy = r++;
+        pnlCampos.add(lblCargo, gbc);
+        gbc.gridx = 0; gbc.gridy = r++;
+        pnlCampos.add(jComboBox2, gbc);
+
+        gbc.gridx = 0; gbc.gridy = r++;
+        pnlCampos.add(jLabel6, gbc);
+        gbc.gridx = 0; gbc.gridy = r++;
+        pnlCampos.add(jTextField4, gbc);
+
+        gbc.insets = new java.awt.Insets(12, 0, 4, 0);
+        gbc.gridx = 0; gbc.gridy = r++;
+        jButton1.setPreferredSize(new java.awt.Dimension(0, 40));
+        pnlCampos.add(jButton1, gbc);
+
+        cardForm.add(pnlCampos, java.awt.BorderLayout.CENTER);
+
+        // Botones de acción del formulario (Registrar, Editar, Eliminar)
+        javax.swing.JPanel pnlBotonesForm = new javax.swing.JPanel(new java.awt.GridLayout(2, 1, 0, 10));
+        pnlBotonesForm.setOpaque(false);
+
+        javax.swing.JPanel pnlPrincipales = new javax.swing.JPanel(new java.awt.GridLayout(1, 2, 10, 0));
+        pnlPrincipales.setOpaque(false);
+        jButton4.setPreferredSize(new java.awt.Dimension(0, 40));
+        jButton5.setPreferredSize(new java.awt.Dimension(0, 40));
+        pnlPrincipales.add(jButton4);
+        pnlPrincipales.add(jButton5);
+        pnlBotonesForm.add(pnlPrincipales);
+
+        jButton2.setPreferredSize(new java.awt.Dimension(0, 40));
+        pnlBotonesForm.add(jButton2);
+
+        cardForm.add(pnlBotonesForm, java.awt.BorderLayout.SOUTH);
+        pnlCuerpo.add(cardForm, java.awt.BorderLayout.WEST);
+
+        // --- Tarjeta derecha (Tabla de Empleados) ---
+        javax.swing.JPanel cardTabla = UITheme.createCardPanel(28, 28, 28, 28);
+        cardTabla.setLayout(new java.awt.BorderLayout(0, 16));
+
+        jLabel5.setFont(UITheme.FONT_CARD_TITLE);
+        jLabel5.setForeground(UITheme.COLOR_TEXT_MAIN);
+        jLabel5.setText("Nómina y Sueldos de Empleados");
+        cardTabla.add(jLabel5, java.awt.BorderLayout.NORTH);
+        cardTabla.add(jScrollPane2, java.awt.BorderLayout.CENTER);
+
+        pnlCuerpo.add(cardTabla, java.awt.BorderLayout.CENTER);
+        getContentPane().add(pnlCuerpo, java.awt.BorderLayout.CENTER);
+
+        revalidate();
+        repaint();
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
