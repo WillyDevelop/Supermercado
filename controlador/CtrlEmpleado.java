@@ -24,8 +24,11 @@ import java.util.List;
 public class CtrlEmpleado implements ActionListener {
     private FrmEmpleado vista;
     private SupermercadoService servicio;
+    
+    // Variable auxiliar para guardar el ID del empleado que se está editando actualmente
+    private int idEmpleadoSeleccionado = -1;
 
-        public CtrlEmpleado(FrmEmpleado vista) {
+    public CtrlEmpleado(FrmEmpleado vista) {
         this(vista, SupermercadoService.getInstancia());
     }
 
@@ -86,7 +89,7 @@ public class CtrlEmpleado implements ActionListener {
     }
 
     /**
-     * Registra un nuevo empleado en el sistema
+     * Registra un nuevo empleado con ID autogenerado
      */
     private void registrarEmpleado() {
         try {
@@ -95,7 +98,6 @@ public class CtrlEmpleado implements ActionListener {
                 return;
             }
 
-            int id = Integer.parseInt(vista.getTxtId().getText().trim());
             String nombre = vista.getTxtNombre().getText().trim();
             double salarioBase = Double.parseDouble(vista.getTxtSalarioBase().getText().trim());
             String cargo = (String) vista.getCbTipoEmpleado().getSelectedItem();
@@ -106,26 +108,23 @@ public class CtrlEmpleado implements ActionListener {
                 return;
             }
 
-            // Validar que el ID no esté duplicado
-            if (buscarEmpleadoPorId(id) != null) {
-                vista.mostrarError("Ya existe un empleado con el ID: " + id);
-                return;
-            }
+            // Generar un ID único automáticamente (buscando el ID máximo actual y sumando 1, o usando un contador)
+            int nuevoId = generarIdAutomatico();
 
             Empleado nuevoEmpleado;
             if ("Cajero".equalsIgnoreCase(cargo)) {
-                nuevoEmpleado = new Cajero(nombre, id, salarioBase, (int) datoExtra);
+                nuevoEmpleado = new Cajero(nombre, nuevoId, salarioBase, (int) datoExtra);
             } else {
-                nuevoEmpleado = new Gerente(nombre, id, salarioBase, datoExtra);
+                nuevoEmpleado = new Gerente(nombre, nuevoId, salarioBase, datoExtra);
             }
 
             servicio.agregarEmpleado(nuevoEmpleado);
             actualizarTabla();
-            vista.limpiarCampos();
-            vista.mostrarMensaje("¡Empleado registrado con éxito!");
+            limpiarTodo();
+            vista.mostrarMensaje("¡Empleado registrado con éxito! (ID asignado: " + nuevoId + ")");
 
         } catch (NumberFormatException ex) {
-            vista.mostrarError("Por favor, ingrese valores numéricos válidos en ID, Salario Base y Ventas/Bono.");
+            vista.mostrarError("Por favor, ingrese valores numéricos válidos en Salario Base y Ventas/Bono.");
         }
     }
 
@@ -148,7 +147,7 @@ public class CtrlEmpleado implements ActionListener {
 
                 if ("Cajero".equalsIgnoreCase(cargo)) {
                     int ventas = (int) datoExtra;
-                    double comision = ventas * 100;
+                    double comision = ventas * 100; // Asumiendo comisión fija por venta
                     total = salarioBase + comision;
                     detalleExtra = "Comisión (" + ventas + " ventas x $100): $" + comision;
                 } else {
@@ -186,21 +185,12 @@ public class CtrlEmpleado implements ActionListener {
     }
 
     /**
-     * Edita los datos del empleado seleccionado
+     * Edita los datos del empleado seleccionado previamente desde la tabla
      */
     private void editarEmpleado() {
         try {
-            String txtId = vista.getTxtId().getText().trim();
-            if (txtId.isEmpty()) {
+            if (idEmpleadoSeleccionado == -1) {
                 vista.mostrarError("Por favor, seleccione un empleado de la tabla para editar.");
-                return;
-            }
-
-            int id = Integer.parseInt(txtId);
-            Empleado empExistente = buscarEmpleadoPorId(id);
-
-            if (empExistente == null) {
-                vista.mostrarError("No se encontró ningún empleado con el ID " + id + " para editar.");
                 return;
             }
 
@@ -219,24 +209,25 @@ public class CtrlEmpleado implements ActionListener {
                 return;
             }
 
+            // Creamos el empleado actualizado conservando su ID original
             Empleado empleadoActualizado;
             if ("Cajero".equalsIgnoreCase(nuevoCargo)) {
-                empleadoActualizado = new Cajero(nuevoNombre, id, nuevoSalarioBase, (int) nuevoDatoExtra);
+                empleadoActualizado = new Cajero(nuevoNombre, idEmpleadoSeleccionado, nuevoSalarioBase, (int) nuevoDatoExtra);
             } else {
-                empleadoActualizado = new Gerente(nuevoNombre, id, nuevoSalarioBase, nuevoDatoExtra);
+                empleadoActualizado = new Gerente(nuevoNombre, idEmpleadoSeleccionado, nuevoSalarioBase, nuevoDatoExtra);
             }
 
             List<Empleado> lista = servicio.getEmpleados();
             for (int i = 0; i < lista.size(); i++) {
-                if (lista.get(i).getIdEmpleado() == id) {
+                if (lista.get(i).getIdEmpleado() == idEmpleadoSeleccionado) {
                     lista.set(i, empleadoActualizado);
                     break;
                 }
             }
 
             actualizarTabla();
-            vista.limpiarCampos();
-            vista.mostrarMensaje("¡Empleado ID " + id + " editado con éxito!");
+            limpiarTodo();
+            vista.mostrarMensaje("¡Empleado ID " + idEmpleadoSeleccionado + " editado con éxito!");
 
         } catch (NumberFormatException ex) {
             vista.mostrarError("Verifique los valores numéricos ingresados.");
@@ -248,18 +239,12 @@ public class CtrlEmpleado implements ActionListener {
      */
     private void eliminarEmpleado() {
         int fila = vista.getTablaEmpleados().getSelectedRow();
-        String txtId = vista.getTxtId().getText().trim();
-
         int id = -1;
+
         if (fila >= 0) {
             id = Integer.parseInt(vista.getTablaEmpleados().getValueAt(fila, 0).toString());
-        } else if (!txtId.isEmpty()) {
-            try {
-                id = Integer.parseInt(txtId);
-            } catch (NumberFormatException e) {
-                vista.mostrarError("ID inválido.");
-                return;
-            }
+        } else if (idEmpleadoSeleccionado != -1) {
+            id = idEmpleadoSeleccionado;
         }
 
         if (id == -1) {
@@ -283,7 +268,7 @@ public class CtrlEmpleado implements ActionListener {
             boolean eliminado = servicio.getEmpleados().removeIf(e -> e.getIdEmpleado() == idFinal);
             if (eliminado) {
                 actualizarTabla();
-                vista.limpiarCampos();
+                limpiarTodo();
                 vista.mostrarMensaje("Empleado eliminado correctamente.");
             } else {
                 vista.mostrarError("No se pudo eliminar el empleado.");
@@ -297,15 +282,12 @@ public class CtrlEmpleado implements ActionListener {
     private void cargarCamposDesdeTabla() {
         int fila = vista.getTablaEmpleados().getSelectedRow();
         if (fila >= 0) {
-            vista.getTxtId().setText(vista.getTablaEmpleados().getValueAt(fila, 0).toString());
+            idEmpleadoSeleccionado = Integer.parseInt(vista.getTablaEmpleados().getValueAt(fila, 0).toString());
             vista.getTxtNombre().setText(vista.getTablaEmpleados().getValueAt(fila, 1).toString());
             vista.getTxtSalarioBase().setText(vista.getTablaEmpleados().getValueAt(fila, 2).toString());
             String cargo = vista.getTablaEmpleados().getValueAt(fila, 3).toString();
             vista.getCbTipoEmpleado().setSelectedItem(cargo);
             vista.getTxtDatoExtra().setText(vista.getTablaEmpleados().getValueAt(fila, 4).toString());
-
-            // Al cargar para editar, bloqueamos el ID para no alterar la clave
-            vista.getTxtId().setEditable(false);
         }
     }
 
@@ -362,10 +344,31 @@ public class CtrlEmpleado implements ActionListener {
         return null;
     }
 
+    /**
+     * Genera un ID automático único basado en los IDs existentes
+     */
+    private int generarIdAutomatico() {
+        List<Empleado> lista = servicio.getEmpleados();
+        if (lista == null || lista.isEmpty()) {
+            return 1; // Si no hay nadie, arranca en 1
+        }
+        int maxId = 0;
+        for (Empleado emp : lista) {
+            if (emp.getIdEmpleado() > maxId) {
+                maxId = emp.getIdEmpleado();
+            }
+        }
+        return maxId + 1; // Retorna el siguiente número disponible
+    }
+
     private boolean camposVacios() {
-        return vista.getTxtId().getText().trim().isEmpty()
-                || vista.getTxtNombre().getText().trim().isEmpty()
+        return vista.getTxtNombre().getText().trim().isEmpty()
                 || vista.getTxtSalarioBase().getText().trim().isEmpty()
                 || vista.getTxtDatoExtra().getText().trim().isEmpty();
+    }
+
+    private void limpiarTodo() {
+        vista.limpiarCampos();
+        idEmpleadoSeleccionado = -1; // Reseteamos la selección
     }
 }
