@@ -1,7 +1,7 @@
 package com.example;
 
-import com.example.service.SupermercadoService;
-import com.example.util.CargaDatosPrueba;
+import com.example.modelo.service.SupermercadoService;
+import com.example.modelo.util.CargaDatosPrueba;
 import com.example.vista.FrmPrincipal;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;

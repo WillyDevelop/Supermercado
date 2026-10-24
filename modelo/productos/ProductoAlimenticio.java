@@ -1,5 +1,5 @@
 package com.example.modelo.productos;
-import com.example.interfaces.Promocionable;
+import com.example.modelo.interfaces.Promocionable;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;

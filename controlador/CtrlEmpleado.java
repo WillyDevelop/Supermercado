@@ -8,7 +8,7 @@ import com.example.modelo.empleados.Empleado;
 import com.example.modelo.empleados.Gerente;
 import com.example.modelo.empleados.Cajero;
 import com.example.vista.FrmEmpleado;
-import com.example.service.SupermercadoService;
+import com.example.modelo.service.SupermercadoService;
 
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;

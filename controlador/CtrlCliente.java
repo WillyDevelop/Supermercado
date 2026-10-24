@@ -2,7 +2,7 @@ package com.example.controlador;
 
 import com.example.modelo.clientes.Cliente;
 import com.example.modelo.clientes.ClienteVIP;
-import com.example.service.SupermercadoService;
+import com.example.modelo.service.SupermercadoService;
 import com.example.vista.FrmCliente;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

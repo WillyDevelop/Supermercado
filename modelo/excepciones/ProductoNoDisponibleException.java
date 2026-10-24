@@ -1,4 +1,4 @@
-package com.example.excepciones;
+package com.example.modelo.excepciones;
 
 //excepcion personalizada de un cliente no registrado
 public class ProductoNoDisponibleException extends Exception {

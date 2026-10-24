@@ -1,4 +1,4 @@
-package com.example.util;
+package com.example.modelo.util;
 
 import com.example.modelo.clientes.Cliente;
 import com.example.modelo.clientes.ClienteVIP;
@@ -8,7 +8,7 @@ import com.example.modelo.productos.ProductoAlimenticio;
 import com.example.modelo.productos.ProductoElectronico;
 import com.example.modelo.productos.ProductoHigiene;
 import com.example.modelo.productos.TipoDeUso;
-import com.example.service.SupermercadoService;
+import com.example.modelo.service.SupermercadoService;
 import java.time.LocalDate;
 
 public class CargaDatosPrueba {

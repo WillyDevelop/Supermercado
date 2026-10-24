@@ -1,7 +1,7 @@
 package com.example.controlador;
 
-import com.example.excepciones.ClienteNoRegistradoException;
-import com.example.excepciones.ProductoNoDisponibleException;
+import com.example.modelo.excepciones.ClienteNoRegistradoException;
+import com.example.modelo.excepciones.ProductoNoDisponibleException;
 import com.example.modelo.clientes.Cliente;
 import com.example.modelo.clientes.ClienteVIP;
 import com.example.modelo.productos.Producto;
@@ -9,7 +9,7 @@ import com.example.modelo.productos.ProductoAlimenticio;
 import com.example.modelo.productos.ProductoElectronico;
 import com.example.modelo.productos.ProductoHigiene;
 import com.example.modelo.productos.TipoDeUso;
-import com.example.service.SupermercadoService;
+import com.example.modelo.service.SupermercadoService;
 import com.example.vista.FrmVenta;
 import java.time.LocalDate;
 import java.util.ArrayList;

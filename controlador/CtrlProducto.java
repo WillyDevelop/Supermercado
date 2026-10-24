@@ -5,7 +5,7 @@ import com.example.modelo.productos.ProductoAlimenticio;
 import com.example.modelo.productos.ProductoElectronico;
 import com.example.modelo.productos.ProductoHigiene;
 import com.example.modelo.productos.TipoDeUso;
-import com.example.service.SupermercadoService;
+import com.example.modelo.service.SupermercadoService;
 import com.example.vista.FrmPrincipal;
 import com.example.vista.FrmProducto;
 import java.time.LocalDate;

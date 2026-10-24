@@ -1,8 +1,8 @@
 package com.example.vista;
 
 import com.example.controlador.CtrlVenta;
-import com.example.excepciones.ClienteNoRegistradoException;
-import com.example.excepciones.ProductoNoDisponibleException;
+import com.example.modelo.excepciones.ClienteNoRegistradoException;
+import com.example.modelo.excepciones.ProductoNoDisponibleException;
 import com.example.modelo.clientes.Cliente;
 import com.example.modelo.clientes.ClienteVIP;
 import com.example.modelo.productos.Producto;

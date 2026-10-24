@@ -1,7 +1,7 @@
 package com.example.modelo.productos;
 
-import com.example.interfaces.ImpuestoAplicable;
-import com.example.interfaces.Promocionable;
+import com.example.modelo.interfaces.ImpuestoAplicable;
+import com.example.modelo.interfaces.Promocionable;
 
 
 public class ProductoHigiene extends Producto implements Promocionable, ImpuestoAplicable {
